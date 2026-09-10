@@ -38,6 +38,14 @@ TSMM owns the canonical semantic vocabulary and relationships of the Trust Syste
 
 TGA remains separately maintained because its artifact lineage includes work derived from and accompanying independently published material. TSMS therefore describes an architectural relationship between repositories, not a claim of common repository ownership.
 
+## TRQP Stack relationship
+
+**TRQP Stack 2026.3 — Banyan** pins TSMM `0.24.0` at exact commit `8ddfd52c876faf368241bc11101681fb1fe49398` as the Stack's canonical semantic authority. This is an external coordinated-release pin, not a TSMM release event and not a transfer of Stack composition authority into this repository.
+
+TSMM remains independently versioned and changes only when its canonical semantics change. A coordinated Stack release may continue to pin an existing TSMM version when those semantics remain sufficient; no synchronization-only TSMM release is required.
+
+The TRQP Assurance Hub owns the coordinated Stack release declaration. TRQP Conformance Suite, TRQP-TSPP, and other Stack components remain authoritative for their own executable evidence and posture semantics. TSMM's role is limited to the canonical semantic concepts and relationships those components reference.
+
 ## Status
 
 `v0.24.0` is the current Candidate Specification. Candidate status means the model is suitable for structured evaluation and implementation experiments, but remains subject to refinement before a future stable release.
