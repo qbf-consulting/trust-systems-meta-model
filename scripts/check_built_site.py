@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
-"""Fail when any governed Markdown source or internal link is absent from _site."""
+"""Fail when any published Markdown source or internal link is absent from _site."""
 from __future__ import annotations
 
 import re
+import yaml
 from pathlib import Path
 from urllib.parse import unquote, urlsplit
 
@@ -13,9 +14,20 @@ HREF_RE = re.compile(r'href=["\']([^"\']+)["\']', re.I)
 PERMALINK_RE = re.compile(r'^permalink:\s*(\S+)', re.M)
 errors: list[str] = []
 
+config = yaml.safe_load((ROOT / "_config.yml").read_text(encoding="utf-8")) or {}
+CONFIG_EXCLUDED = {item.rstrip("/") for item in (config.get("exclude") or []) if isinstance(item, str)}
+
+
+def is_config_excluded(path: Path) -> bool:
+    rel = path.relative_to(ROOT).as_posix()
+    return rel in CONFIG_EXCLUDED or any(rel.startswith(item + "/") for item in CONFIG_EXCLUDED)
+
 
 def sources() -> list[Path]:
-    return [p for p in ROOT.rglob("*.md") if not any(part in EXCLUDED for part in p.parts)]
+    return [
+        p for p in ROOT.rglob("*.md")
+        if not any(part in EXCLUDED for part in p.parts) and not is_config_excluded(p)
+    ]
 
 
 def front_matter(path: Path) -> str:
@@ -74,6 +86,16 @@ for page in html_files:
             candidates.extend([target.with_suffix(".html"), target / "index.html"])
         if target.suffix == ".md":
             candidates.append(target.with_suffix(".html"))
+            # Relative Markdown links in rendered pages can originate from a
+            # source route whose permalink differs from its source directory.
+            # Resolve them against the repository source tree as a fallback.
+            source_rel = path.lstrip("./")
+            source_candidate = ROOT / "docs" / source_rel
+            if source_candidate.is_file():
+                candidates.append(expected_output(source_candidate))
+            root_candidate = ROOT / source_rel
+            if root_candidate.is_file() and not is_config_excluded(root_candidate):
+                candidates.append(expected_output(root_candidate))
         if not any(candidate.resolve().exists() for candidate in candidates):
             errors.append(f"Broken generated link in {page.relative_to(SITE)} -> {href}")
 
