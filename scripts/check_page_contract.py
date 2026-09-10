@@ -6,11 +6,15 @@ import yaml
 
 ROOT = Path(__file__).resolve().parents[1]
 EXCLUDED = {'.git', '.bundle', 'vendor', 'node_modules', '_site', 'scripts', 'validation', 'artifacts', '.github'}
+CONFIG_EXCLUDED = set()
 errors = []
 count = 0
 pages = []
 
 config = yaml.safe_load((ROOT / '_config.yml').read_text(encoding='utf-8')) or {}
+for item in config.get('exclude') or []:
+    if isinstance(item, str):
+        CONFIG_EXCLUDED.add(item.rstrip('/'))
 defaults = config.get('defaults') or []
 has_page_layout_default = any(
     isinstance(item, dict)
@@ -24,6 +28,9 @@ if not has_page_layout_default:
 
 for path in sorted(ROOT.rglob('*.md')):
     if any(part in EXCLUDED for part in path.parts):
+        continue
+    rel_path = path.relative_to(ROOT).as_posix()
+    if rel_path in CONFIG_EXCLUDED or any(rel_path.startswith(item + '/') for item in CONFIG_EXCLUDED):
         continue
     text = path.read_text(encoding='utf-8', errors='replace')
     count += 1
