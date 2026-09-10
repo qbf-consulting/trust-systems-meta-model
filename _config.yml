@@ -16,13 +16,12 @@ aux_links:
 mermaid:
   version: "11.12.2"
 
-# Publication contract: all documentation pages use the repository's standard
-# Just-the-Docs layout unless a page explicitly opts into a different layout.
-# Keeping this at the collection/root level prevents a newly added Markdown
-# page from silently publishing as unstyled HTML.
+# Publication contract: all publishable Markdown pages use the repository's
+# standard Just-the-Docs layout unless a page explicitly opts into another.
 defaults:
   - scope:
-      path: "docs"
+      path: ""
+      type: pages
     values:
       layout: default
 
@@ -31,6 +30,7 @@ exclude:
   - scripts/
   - tests/
   - validation/
+  - artifacts/
   - .github/
   - .bundle/
   - Gemfile
@@ -40,6 +40,7 @@ exclude:
   - SUPPORT.md
   - CONTRIBUTING.md
   - GOVERNANCE.md
+  - NOTICE.md
   - LICENSE
   - CITATION.cff
   - PROJECT-STATUS.yaml
