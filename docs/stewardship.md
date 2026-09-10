@@ -1,20 +1,31 @@
 ---
 layout: default
 title: Stewardship
-nav_order: 90
-permalink: /stewardship.html
+nav_order: 2
 ---
 
 # Stewardship
 
-The Trust Systems Meta Model (TSMM) is institutionally stewarded by **QBF Consulting LLP** in the `qbf-consulting` GitHub organisation.
+The Trust Systems Meta-Model (TSMM) is authored and maintained by **Sankarshan Mukhopadhyay** (`sankarshan@qbfconsulting.digital`) and stewarded by **QBF Consulting LLP**.
 
-TSMM remains the canonical-semantics layer of the Trust Systems Modelling Stack (TSMS). TSMS is a composition across independently stewarded repositories:
+The canonical project repository is:
 
-- **TSMM** — QBF Consulting; canonical trust-system semantics.
-- **Trust Infrastructure Schemas (TIS)** — QBF Consulting; portable contracts and validation surfaces.
-- **Trust Graph Artifacts (TGA)** — Sankarshan Mukhopadhyay; executable governance patterns, implementation guidance and negative assurance tests, including artifacts derived from the Trust Graph publishing programme.
+https://github.com/qbf-consulting/trust-systems-meta-model
 
-Composition does not transfer authority, copyright, provenance or stewardship between layers. Each repository remains authoritative only for its declared scope.
+QBF stewardship means that the QBF repository is the current home for TSMM governance, maintenance, releases, canonical semantics, validation and publication. It does not erase historical authorship or contribution provenance, transfer authority from external specifications into TSMM, or collapse the separate authority boundaries of TIS and TGA.
 
-The current TSMM and TSMS documentation is published from this repository under the QBF Consulting GitHub Pages namespace. Publication under that namespace identifies the steward of the documentation host; it does not alter the independent stewardship or provenance of composed TSMS layers.
+## TSMS authority boundary
+
+Within the Trust Systems Modelling Stack:
+
+- **TSMM** owns canonical trust-system semantics and semantic projections.
+- **TIS** owns portable machine-readable contract definitions, identifiers and validation behavior for its artifacts.
+- **TGA** owns its executable governance compositions, patterns and implementation artifacts.
+
+The fact that TSMM and TIS are currently QBF-stewarded does not make TGA a QBF artifact. Cross-repository compatibility is expressed through explicit contracts and evidence rather than inferred from common stewardship.
+
+## Historical continuity
+
+Published release artifacts, receipts, commit SHAs, schema identifiers and evidence that refer to the repository's earlier personal namespace are historical records. They are not silently rewritten. Current publication and citation surfaces use the QBF project home; any semantic identifier migration requires an explicit versioning and compatibility decision.
+
+Use [`CITATION.cff`](../CITATION.cff) for current citation metadata and [`governance/repository-authority.yaml`](../governance/repository-authority.yaml) for machine-readable repository authority.
