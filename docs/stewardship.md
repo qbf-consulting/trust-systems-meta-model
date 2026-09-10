@@ -16,4 +16,4 @@ TSMM remains the canonical-semantics layer of the Trust Systems Modelling Stack 
 
 Composition does not transfer authority, copyright, provenance or stewardship between layers. Each repository remains authoritative only for its declared scope.
 
-The current TSMM and TSMS documentation is published from this repository under the QBF Consulting GitHub Pages namespace.
+The current TSMM and TSMS documentation is published from this repository under the QBF Consulting GitHub Pages namespace. Publication under that namespace identifies the steward of the documentation host; it does not alter the independent stewardship or provenance of composed TSMS layers.
