@@ -24,10 +24,7 @@ def is_config_excluded(path: Path) -> bool:
 
 
 def sources() -> list[Path]:
-    return [
-        p for p in ROOT.rglob("*.md")
-        if not any(part in EXCLUDED for part in p.parts) and not is_config_excluded(p)
-    ]
+    return [p for p in ROOT.rglob("*.md") if not any(part in EXCLUDED for part in p.parts) and not is_config_excluded(p)]
 
 
 def front_matter(path: Path) -> str:
@@ -42,32 +39,19 @@ def expected_output(path: Path) -> Path:
     match = PERMALINK_RE.search(front_matter(path))
     if match:
         route = match.group(1).split("#", 1)[0].split("?", 1)[0].lstrip("/")
+        if not route:
+            return SITE / "index.html"
         return SITE / route / "index.html" if route.endswith("/") else SITE / route
     rel = path.relative_to(ROOT)
     return SITE / ("index.html" if rel.as_posix() == "index.md" else rel.with_suffix(".html"))
 
 
-def source_candidates_for_href(path: str) -> list[Path]:
-    """Map source-style links emitted by Jekyll back to published outputs."""
-    clean = path.lstrip("./")
-    candidates: list[Path] = []
-    for source in (ROOT / clean, ROOT / "docs" / clean):
-        if source.is_file() and not is_config_excluded(source):
-            if source.suffix == ".md":
-                candidates.append(expected_output(source))
-            else:
-                candidates.append(SITE / source.relative_to(ROOT))
-        elif source.is_dir():
-            index = source / "index.md"
-            if index.is_file() and not is_config_excluded(index):
-                candidates.append(expected_output(index))
-    return candidates
-
+source_files = sources()
+output_to_source = {expected_output(source).resolve(): source for source in source_files}
 
 if not (SITE / "index.html").is_file():
     errors.append("Missing _site/index.html")
 
-source_files = sources()
 for source in source_files:
     target = expected_output(source)
     if not target.is_file():
@@ -83,6 +67,7 @@ if not (SITE / "assets/js/mermaid-init.js").is_file():
 html_files = list(SITE.rglob("*.html"))
 for page in html_files:
     text = page.read_text(encoding="utf-8", errors="replace")
+    page_source = output_to_source.get(page.resolve())
     for href in HREF_RE.findall(text):
         parsed = urlsplit(href)
         if parsed.scheme or href.startswith(("#", "mailto:", "tel:", "javascript:")):
@@ -101,7 +86,28 @@ for page in html_files:
         candidates = [target]
         if target.suffix == "":
             candidates.extend([target.with_suffix(".html"), target / "index.html"])
-        candidates.extend(source_candidates_for_href(path))
+
+        # Jekyll can preserve source-style relative links (for example
+        # sibling.md) even when the source page has a permalink that moves its
+        # generated HTML. Resolve those links relative to the originating
+        # Markdown source and compare against that source's published output.
+        if page_source is not None:
+            source_target = (page_source.parent / path).resolve()
+            try:
+                source_target.relative_to(ROOT.resolve())
+            except ValueError:
+                source_target = None
+            if source_target is not None:
+                if source_target.is_file() and not is_config_excluded(source_target):
+                    if source_target.suffix == ".md":
+                        candidates.append(expected_output(source_target))
+                    else:
+                        candidates.append(SITE / source_target.relative_to(ROOT))
+                elif source_target.is_dir():
+                    index = source_target / "index.md"
+                    if index.is_file() and not is_config_excluded(index):
+                        candidates.append(expected_output(index))
+
         if not any(candidate.resolve().exists() for candidate in candidates):
             errors.append(f"Broken generated link in {page.relative_to(SITE)} -> {href}")
 
