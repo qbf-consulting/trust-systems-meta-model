@@ -1,14 +1,23 @@
-title: Trust Systems Meta Model
-description: Canonical semantic and graph model for governed trust systems
-url: https://sankarshanmukhopadhyay.github.io
+title: Trust Systems Meta-Model (TSMM)
+description: A portable semantic reference model for designing, comparing, and implementing trust systems.
+url: https://qbf-consulting.github.io
 baseurl: /trust-systems-meta-model
+repository: qbf-consulting/trust-systems-meta-model
 remote_theme: just-the-docs/just-the-docs@v0.10.1
-markdown: kramdown
+plugins:
+  - jekyll-remote-theme
+  - jekyll-seo-tag
+search_enabled: true
+heading_anchors: true
+color_scheme: light
+aux_links:
+  "View on GitHub":
+    - "https://github.com/qbf-consulting/trust-systems-meta-model"
+mermaid:
+  version: "11.12.2"
 
-# Apply the Just The Docs chrome to every normal Jekyll page.
-# Without this default, pages with front matter but no explicit layout are
-# converted to bare HTML fragments and bypass the theme sidebar, header,
-# breadcrumbs, search assets, and responsive styling.
+# Publication contract: all publishable Markdown pages use the repository's
+# standard Just-the-Docs layout unless a page explicitly opts into another.
 defaults:
   - scope:
       path: ""
@@ -16,28 +25,26 @@ defaults:
     values:
       layout: default
 
-search_enabled: true
-heading_anchors: true
-color_scheme: light
-aux_links:
-  "View on GitHub":
-    - "https://github.com/sankarshanmukhopadhyay/trust-systems-meta-model"
-plugins:
-  - jekyll-remote-theme
-  - jekyll-seo-tag
-  - jekyll-relative-links
 exclude:
-  - node_modules/
   - vendor/
-  - tools/
   - scripts/
   - tests/
   - validation/
   - artifacts/
   - .github/
+  - .bundle/
   - Gemfile
   - Gemfile.lock
-
-relative_links:
-  enabled: true
-  collections: true
+  - README.md
+  - SECURITY.md
+  - SUPPORT.md
+  - CONTRIBUTING.md
+  - GOVERNANCE.md
+  - NOTICE.md
+  - LICENSE
+  - CITATION.cff
+  - PROJECT-STATUS.yaml
+  - VERSION
+  - Makefile
+  - requirements-dev.txt
+  - artifacts/

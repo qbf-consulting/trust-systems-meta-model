@@ -1,12 +1,16 @@
-# Ruby/Jekyll build state
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Editors / OS
+.DS_Store
+.idea/
+.vscode/
+
+# Build / generated
+_site/
 .bundle/
 vendor/
-_site/
-.sass-cache/
-.jekyll-cache/
-.jekyll-metadata
-
-# Local tooling
-__pycache__/
-*.pyc
-.DS_Store
+artifacts/generated/
