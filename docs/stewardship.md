@@ -2,6 +2,7 @@
 layout: default
 title: Stewardship
 nav_order: 2
+permalink: /stewardship.html
 ---
 
 # Stewardship
