@@ -6,7 +6,7 @@
 
 TSMM is a portable semantic reference model for designing, comparing, implementing, and assuring trust systems. It makes identity, authority, delegation, evidence, assurance, governance, lifecycle, decision and effect semantics explicit enough to review, validate and bind to implementation technologies.
 
-**Current release:** `v0.24.0` — Candidate Specification  
+**Current version:** `v0.24.0` — Candidate Specification  
 **Author and maintainer:** Sankarshan Mukhopadhyay, QBF Consulting LLP — `sankarshan@qbfconsulting.digital`  
 **Project stewardship:** QBF Consulting LLP  
 **Canonical repository:** https://github.com/qbf-consulting/trust-systems-meta-model  
@@ -28,51 +28,48 @@ TSMM is a portable semantic reference model for designing, comparing, implementi
 - [Citation metadata](CITATION.cff)
 - [v0.24.0 release notes](releases/v0.24.0.md)
 
-## Repository authority
+## Authority boundary
 
-TSMM owns **canonical trust-system semantics**, semantic concept identifiers, model relationships and semantic projection rules. Machine-readable repository authority is declared in [`governance/repository-authority.yaml`](governance/repository-authority.yaml).
+TSMM owns the canonical semantic vocabulary and relationships of the Trust Systems Modelling Stack (TSMS). It does **not** own downstream portable contract definitions or generated compositions.
 
-Within the Trust Systems Modelling Stack (TSMS), authority remains deliberately separated:
+- **TSMM** — canonical semantics and invariants (this repository)
+- **TIS** — portable contracts, schemas, identifiers and validation artifacts: https://github.com/qbf-consulting/trust-infrastructure-schemas
+- **TGA** — executable compositions, governance patterns and negative tests: https://github.com/sankarshanmukhopadhyay/trust-governance-artifacts
 
-| Layer | Authority |
-|---|---|
-| TSMM | Canonical semantics and semantic projections |
-| TIS | Portable machine-readable contracts, identifiers and validation |
-| TGA | Executable governance compositions and implementation patterns in its own repository |
-
-The current candidate baseline is **TSMM v0.24.0 / TIS v0.15.0 / TGA v0.12.1**. Common or related stewardship does not collapse these authority boundaries.
-
-## What is in this repository
-
-TSMM includes the core semantic model; JSON Schema and YAML model artifacts; authority, delegation, lifecycle and evidence semantics; agentic and assurance extensions; protocol and ecosystem bindings; implementation crosswalks; conformance profiles and negative test vectors; interoperability examples; and TSMS compatibility, drift and end-to-end assurance machinery.
-
-The model is intentionally protocol-neutral. A binding maps TSMM semantics to another specification; it does not make TSMM authoritative for that external specification or make that specification authoritative for TSMM semantics.
-
-## Validation
-
-Install development dependencies and run the repository validation suite:
-
-```bash
-python -m pip install -r requirements-dev.txt
-python scripts/validate_all.py
-```
-
-The validation suite checks model/schema consistency, examples, bindings, test vectors, documentation, portfolio relationships, repository governance, TSMS baseline evidence and related invariants. A green build is evidence that repository-defined checks pass; it is not independent certification or legal recognition.
+TGA remains separately maintained because its artifact lineage includes work derived from and accompanying independently published material. TSMS therefore describes an architectural relationship between repositories, not a claim of common repository ownership.
 
 ## Status
 
-TSMM is an **Active Candidate Specification**. `PROJECT-STATUS.yaml` is the machine-readable repository status declaration. Candidate status means the model is sufficiently coherent for implementation and interoperability work while remaining subject to evidence-led refinement before a stable release.
+`v0.24.0` is the current Candidate Specification. Candidate status means the model is suitable for structured evaluation and implementation experiments, but remains subject to refinement before a future stable release.
 
-## Stewardship and historical continuity
+Machine-readable status and authority declarations are available in:
 
-TSMM is authored and maintained by Sankarshan Mukhopadhyay and currently stewarded by QBF Consulting LLP. The repository previously lived in Sankarshan Mukhopadhyay's personal GitHub namespace. Historical releases, receipts, commit SHAs, identifiers and evidence that record that namespace remain historical records and are not silently rewritten merely because stewardship or publication location changes.
+- [`PROJECT-STATUS.yaml`](PROJECT-STATUS.yaml)
+- [`governance/repository-authority.yaml`](governance/repository-authority.yaml)
 
-Current project publication, repository links and citation metadata use the QBF Consulting project home. See [`docs/stewardship.md`](docs/stewardship.md) for the authority and continuity policy.
+## Validation
 
-## Citation and license
+The repository includes schemas, examples, test vectors, semantic projections and TSMS compatibility evidence. Run the candidate validation gate locally with:
 
-Use [`CITATION.cff`](CITATION.cff) and identify the TSMM version used. TSMM is licensed under [CC BY-SA 4.0](LICENSE).
+```bash
+python -m pip install -r requirements-dev.txt
+make candidate-check
+```
+
+CI runs the same candidate gate for pull requests and changes to `main`.
+
+## Stewardship and provenance
+
+The project is authored and maintained by **Sankarshan Mukhopadhyay** and stewarded through **QBF Consulting LLP**. The move into the QBF Consulting GitHub organization establishes the current institutional home of the project; it does not rewrite historical commits, release evidence, identifiers or third-party provenance.
+
+See [`STEWARDSHIP.md`](STEWARDSHIP.md), [`NOTICE.md`](NOTICE.md), and [`CITATION.cff`](CITATION.cff) for the repository's stewardship, continuity and citation declarations.
 
 ## Contributing and security
 
-See [CONTRIBUTING.md](CONTRIBUTING.md), [GOVERNANCE.md](GOVERNANCE.md), [SECURITY.md](SECURITY.md), and [SUPPORT.md](SUPPORT.md).
+Contributions are welcome through issues and pull requests. Please read [`CONTRIBUTING.md`](CONTRIBUTING.md) and [`GOVERNANCE.md`](GOVERNANCE.md) before proposing semantic changes.
+
+Security-sensitive reports should follow [`SECURITY.md`](SECURITY.md).
+
+## License
+
+See [`LICENSE`](LICENSE) for the applicable repository license.
