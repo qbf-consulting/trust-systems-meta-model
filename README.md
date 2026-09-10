@@ -62,7 +62,7 @@ CI runs the same candidate gate for pull requests and changes to `main`.
 
 The project is authored and maintained by **Sankarshan Mukhopadhyay** and stewarded through **QBF Consulting LLP**. The move into the QBF Consulting GitHub organization establishes the current institutional home of the project; it does not rewrite historical commits, release evidence, identifiers or third-party provenance.
 
-See [`STEWARDSHIP.md`](STEWARDSHIP.md), [`NOTICE.md`](NOTICE.md), and [`CITATION.cff`](CITATION.cff) for the repository's stewardship, continuity and citation declarations.
+See [`docs/stewardship.md`](docs/stewardship.md), [`NOTICE.md`](NOTICE.md), and [`CITATION.cff`](CITATION.cff) for the repository's stewardship, continuity and citation declarations.
 
 ## Contributing and security
 
