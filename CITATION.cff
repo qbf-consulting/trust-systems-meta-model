@@ -1,7 +1,14 @@
 cff-version: 1.2.0
 title: "Trust Systems Meta Model"
-message: "Please cite this repository by title, version, and repository URL."
-type: software
-version: "0.22.0"
+message: "Please cite the TSMM version used with the metadata below."
+type: generic
+version: "0.24.0"
+authors:
+  - family-names: Mukhopadhyay
+    given-names: Sankarshan
+    email: sankarshan@qbfconsulting.digital
+    affiliation: QBF Consulting LLP
 license: CC-BY-SA-4.0
-repository-code: "https://github.com/sankarshanmukhopadhyay/trust-systems-meta-model"
+repository-code: "https://github.com/qbf-consulting/trust-systems-meta-model"
+url: "https://qbf-consulting.github.io/trust-systems-meta-model/"
+abstract: "A portable semantic reference model for designing, comparing, implementing and assuring trust systems, and the semantic foundation of the Trust Systems Modelling Stack (TSMS)."
