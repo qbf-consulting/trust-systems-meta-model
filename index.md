@@ -14,7 +14,7 @@ A portable semantic reference model for designing, comparing, implementing, and 
 **Project stewardship:** QBF Consulting LLP  
 **Canonical repository:** https://github.com/qbf-consulting/trust-systems-meta-model
 
-[View the v0.24.0 release notes](releases/v0.24.0.md) · [Citation metadata](CITATION.cff) · [Stewardship](docs/stewardship.md)
+[View the v0.24.0 release notes](releases/v0.24.0.md) · [Citation metadata](https://github.com/qbf-consulting/trust-systems-meta-model/blob/main/CITATION.cff) · [Stewardship](docs/stewardship.md)
 
 ## Start here
 
