@@ -47,6 +47,23 @@ def expected_output(path: Path) -> Path:
     return SITE / ("index.html" if rel.as_posix() == "index.md" else rel.with_suffix(".html"))
 
 
+def source_candidates_for_href(path: str) -> list[Path]:
+    """Map source-style links emitted by Jekyll back to published outputs."""
+    clean = path.lstrip("./")
+    candidates: list[Path] = []
+    for source in (ROOT / clean, ROOT / "docs" / clean):
+        if source.is_file() and not is_config_excluded(source):
+            if source.suffix == ".md":
+                candidates.append(expected_output(source))
+            else:
+                candidates.append(SITE / source.relative_to(ROOT))
+        elif source.is_dir():
+            index = source / "index.md"
+            if index.is_file() and not is_config_excluded(index):
+                candidates.append(expected_output(index))
+    return candidates
+
+
 if not (SITE / "index.html").is_file():
     errors.append("Missing _site/index.html")
 
@@ -84,18 +101,7 @@ for page in html_files:
         candidates = [target]
         if target.suffix == "":
             candidates.extend([target.with_suffix(".html"), target / "index.html"])
-        if target.suffix == ".md":
-            candidates.append(target.with_suffix(".html"))
-            # Relative Markdown links in rendered pages can originate from a
-            # source route whose permalink differs from its source directory.
-            # Resolve them against the repository source tree as a fallback.
-            source_rel = path.lstrip("./")
-            source_candidate = ROOT / "docs" / source_rel
-            if source_candidate.is_file():
-                candidates.append(expected_output(source_candidate))
-            root_candidate = ROOT / source_rel
-            if root_candidate.is_file() and not is_config_excluded(root_candidate):
-                candidates.append(expected_output(root_candidate))
+        candidates.extend(source_candidates_for_href(path))
         if not any(candidate.resolve().exists() for candidate in candidates):
             errors.append(f"Broken generated link in {page.relative_to(SITE)} -> {href}")
 
