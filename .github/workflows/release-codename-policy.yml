@@ -16,6 +16,7 @@ on:
       - 'config/release-codenames.txt'
       - 'scripts/release_codenames.py'
       - 'scripts/test_release_codenames.py'
+      - 'docs/release-governance.md'
       - '.github/workflows/release-codename-policy.yml'
   workflow_dispatch:
     inputs:
@@ -31,8 +32,8 @@ jobs:
   validate:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
         with:
           python-version: '3.12'
       - name: Validate pinned pool, policy and history
