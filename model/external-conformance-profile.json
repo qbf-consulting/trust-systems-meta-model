@@ -1,0 +1,54 @@
+{
+  "profile_id": "tsmm-external-conformance-core-2026.1",
+  "profile_version": "1.0.0",
+  "tsmm_version": "0.24.0",
+  "status": "candidate",
+  "authority": {
+    "owner": "TSMM",
+    "scope": "semantic-conformance-profile",
+    "non_claims": [
+      "external-certification",
+      "legal-compliance",
+      "ecosystem-recognition"
+    ]
+  },
+  "requirements": [
+    {
+      "id": "TSMM-CONF-AUTHORITY",
+      "semantic": "authority",
+      "required": true,
+      "claim": "The implementation can identify the authority under which an action or registry assertion is evaluated."
+    },
+    {
+      "id": "TSMM-CONF-DELEGATION",
+      "semantic": "delegation",
+      "required": true,
+      "claim": "The implementation can represent delegated authority without treating delegation as equivalent to identity."
+    },
+    {
+      "id": "TSMM-CONF-SCOPE",
+      "semantic": "scope",
+      "required": true,
+      "claim": "The implementation can evaluate whether a requested effect remains within the authority or delegation scope."
+    },
+    {
+      "id": "TSMM-CONF-CURRENT-STATE",
+      "semantic": "current-state",
+      "required": true,
+      "claim": "The implementation can distinguish current, revoked, superseded, or otherwise non-current relationship or registry state."
+    },
+    {
+      "id": "TSMM-CONF-EVIDENCE",
+      "semantic": "evidence",
+      "required": true,
+      "claim": "The implementation can bind a conformance decision to inspectable evidence and preserve missing evidence as non-success."
+    }
+  ],
+  "dispositions": ["PASS", "PARTIAL", "FAIL", "INDETERMINATE"],
+  "invariants": [
+    "missing required evidence MUST NOT become PASS",
+    "unknown semantic identifiers MUST NOT become PASS",
+    "unsupported profile or TSMM versions MUST NOT become PASS",
+    "revoked or non-current authority state MUST NOT become PASS"
+  ]
+}
