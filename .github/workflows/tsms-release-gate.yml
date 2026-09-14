@@ -29,8 +29,8 @@ jobs:
   release-gate:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
         with:
           python-version: '3.12'
       - name: Deterministic wire pressure tests
@@ -50,7 +50,7 @@ jobs:
       - name: Build machine-readable release candidate manifest
         run: python3 scripts/build_tsms_release_candidate.py
       - name: Upload TSMS release-gate evidence
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: tsms-stack-2026.1-cashew-nut-evidence
           path: |
