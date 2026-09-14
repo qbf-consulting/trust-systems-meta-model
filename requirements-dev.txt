@@ -1,4 +1,4 @@
 # Pinned validation dependencies for reproducible TSMM conformance checks.
-jsonschema==4.23.0
-referencing==0.35.1
-PyYAML==6.0.2
+jsonschema==4.26.0
+referencing==0.37.0
+PyYAML==6.0.3
