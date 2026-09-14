@@ -1,6 +1,6 @@
 ---
 owner: maintainers
-last_reviewed: 2026-07-21
+last_reviewed: 2026-09-14
 applicable_version: 0.24.0
 tier: 0
 title: Conformance
@@ -15,6 +15,7 @@ This section contains the TSMM conformance documentation. Each page is published
 
 ## Contents
 
+- [External Conformance Programme](external-conformance-programme.md)
 - [Runtime Governance Test Profile](runtime-governance-test-profile.md)
 - [TSMM Conformance Self-Assessment Checklist](tsmm-conformance-checklist.md)
 - [TSMM Agentic Conformance Profile](tsmm-profile-agentic.md)
