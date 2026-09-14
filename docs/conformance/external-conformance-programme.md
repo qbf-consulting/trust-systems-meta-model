@@ -1,3 +1,14 @@
+---
+owner: maintainers
+last_reviewed: 2026-09-14
+applicable_version: 0.24.0
+tier: 1
+title: External Conformance Programme
+permalink: /conformance/external-conformance-programme.html
+parent: Conformance
+grand_parent: Documentation
+---
+
 # TSMM/TIS External Conformance and Portable Evidence Programme
 
 ## Proposition
