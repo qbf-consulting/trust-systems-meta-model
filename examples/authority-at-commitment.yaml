@@ -1,0 +1,36 @@
+id: tsmm-authority-at-commitment-fixtures-v1
+semantic_profile: authority-at-commitment
+version: "1.0"
+cases:
+  - id: AAC-PERMIT-001
+    authority_state: active
+    exact_effect_bound: true
+    scope_satisfied: true
+    approval_required: false
+    expected: permit
+  - id: AAC-DENY-EXPIRED
+    authority_state: expired
+    exact_effect_bound: true
+    scope_satisfied: true
+    approval_required: false
+    expected: deny
+  - id: AAC-DENY-SCOPE
+    authority_state: active
+    exact_effect_bound: true
+    scope_satisfied: false
+    approval_required: false
+    expected: deny
+  - id: AAC-DENY-WRONG-APPROVAL
+    authority_state: active
+    exact_effect_bound: true
+    scope_satisfied: true
+    approval_required: true
+    approval_present: true
+    approval_matches_effect: false
+    expected: deny
+  - id: AAC-INDETERMINATE-STATUS
+    authority_state: unknown
+    exact_effect_bound: true
+    scope_satisfied: true
+    approval_required: false
+    expected: indeterminate
