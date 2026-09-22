@@ -17,6 +17,7 @@ TSMM is a portable semantic reference model for designing, comparing, implementi
 - [Documentation home](docs/index.md)
 - [Getting started](docs/getting-started/index.md)
 - [Core model](docs/core-model.md)
+- [Authority at commitment](docs/authority-at-commitment.md) — exact-action authority semantics and falsification cases
 - [Repository status](docs/repository-status.md)
 - [Candidate readiness](docs/candidate-readiness.md)
 - [Conformance](docs/conformance/index.md)
@@ -34,7 +35,7 @@ TSMM owns the canonical semantic vocabulary and relationships of the Trust Syste
 
 - **TSMM** — canonical semantics and invariants (this repository)
 - **TIS** — portable contracts, schemas, identifiers and validation artifacts: https://github.com/qbf-consulting/trust-infrastructure-schemas
-- **TGA** — executable compositions, governance patterns and negative tests: https://github.com/sankarshanmukhopadhyay/trust-governance-artifacts
+- **TGA** — executable compositions, governance patterns and negative tests: https://github.com/sankarshanmukhopadhyay/trust-graph-artifacts
 
 TGA remains separately maintained because its artifact lineage includes work derived from and accompanying independently published material. TSMS therefore describes an architectural relationship between repositories, not a claim of common repository ownership.
 
