@@ -1,0 +1,98 @@
+{
+  "schema": "tsmm-composite-authority-lifecycle-pressure/v1",
+  "normativeStatus": "informative-pressure-test",
+  "cases": [
+    {
+      "id": "CAL-01-current-2-of-3",
+      "current_members": [
+        "a",
+        "b",
+        "c"
+      ],
+      "threshold": 2,
+      "evidence_members": [
+        "a",
+        "b"
+      ],
+      "change": null,
+      "expected_current_authorization": "current",
+      "expected_historical_verification": "preserved"
+    },
+    {
+      "id": "CAL-02-member-removed",
+      "current_members": [
+        "a",
+        "c",
+        "d"
+      ],
+      "threshold": 2,
+      "evidence_members": [
+        "a",
+        "b"
+      ],
+      "change": {
+        "dimension": "authority-membership",
+        "impact": "material"
+      },
+      "expected_current_authorization": "reassessment_required",
+      "expected_historical_verification": "preserved"
+    },
+    {
+      "id": "CAL-03-threshold-changed",
+      "current_members": [
+        "a",
+        "b",
+        "c"
+      ],
+      "threshold": 3,
+      "evidence_members": [
+        "a",
+        "b"
+      ],
+      "change": {
+        "dimension": "authority-exercise-rule",
+        "impact": "material"
+      },
+      "expected_current_authorization": "reassessment_required",
+      "expected_historical_verification": "preserved"
+    },
+    {
+      "id": "CAL-04-change-impact-unknown",
+      "current_members": [
+        "a",
+        "b",
+        "c"
+      ],
+      "threshold": 2,
+      "evidence_members": [
+        "a",
+        "b"
+      ],
+      "change": {
+        "dimension": "authority-membership",
+        "impact": "unknown"
+      },
+      "expected_current_authorization": "indeterminate",
+      "expected_historical_verification": "preserved"
+    },
+    {
+      "id": "CAL-05-nonmaterial-metadata",
+      "current_members": [
+        "a",
+        "b",
+        "c"
+      ],
+      "threshold": 2,
+      "evidence_members": [
+        "a",
+        "b"
+      ],
+      "change": {
+        "dimension": "documentation",
+        "impact": "non_material"
+      },
+      "expected_current_authorization": "current",
+      "expected_historical_verification": "preserved"
+    }
+  ]
+}
