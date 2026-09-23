@@ -1,0 +1,110 @@
+{
+  "receiptId": "urn:tsms:baseline:2026-09-23",
+  "stackId": "urn:tsms:stack:trust-systems-modelling",
+  "status": "validated-successor-baseline",
+  "issuedAt": "2026-09-23",
+  "governingIssue": "https://github.com/qbf-consulting/trust-systems-meta-model/issues/52",
+  "predecessor": "urn:tsms:baseline:2026-08-29",
+  "components": [
+    {
+      "id": "tsmm",
+      "repository": "qbf-consulting/trust-systems-meta-model",
+      "version": "v0.25.0",
+      "commit": "a673971d7a3e10cff5ceb679738de4ce5bce6857",
+      "role": "canonical-semantic-model",
+      "implementationPr": "https://github.com/qbf-consulting/trust-systems-meta-model/pull/54",
+      "validationRuns": [
+        {
+          "name": "Validate TSMM Candidate",
+          "run": "https://github.com/qbf-consulting/trust-systems-meta-model/actions/runs/35822131044",
+          "conclusion": "success"
+        },
+        {
+          "name": "Build and deploy GitHub Pages",
+          "run": "https://github.com/qbf-consulting/trust-systems-meta-model/actions/runs/35822131124",
+          "conclusion": "success"
+        }
+      ],
+      "evidence": [
+        "releases/v0.25.0.md",
+        "docs/authority-at-commitment.md",
+        "docs/model/composite-authority-lifecycle-pressure-test.md"
+      ]
+    },
+    {
+      "id": "tis",
+      "repository": "qbf-consulting/trust-infrastructure-schemas",
+      "version": "v0.15.0",
+      "commit": "e4fbe60e6810f108b593c76ac2b970093a59a5e1",
+      "role": "portable-machine-readable-contract-layer",
+      "implementationPr": "https://github.com/qbf-consulting/trust-infrastructure-schemas/pull/24",
+      "validationRuns": [
+        {
+          "name": "Validate TIS Candidate",
+          "run": "https://github.com/qbf-consulting/trust-infrastructure-schemas/actions/runs/35822319421",
+          "conclusion": "success"
+        },
+        {
+          "name": "Build and deploy GitHub Pages",
+          "run": "https://github.com/qbf-consulting/trust-infrastructure-schemas/actions/runs/35822319432",
+          "conclusion": "success"
+        }
+      ],
+      "evidence": [
+        "docs/releases/v0.15.0.md",
+        "governance/authority-at-commitment.schema.json",
+        "model/tsms-compatibility.json"
+      ]
+    },
+    {
+      "id": "tga",
+      "repository": "sankarshanmukhopadhyay/trust-graph-artifacts",
+      "version": "v0.13.0",
+      "commit": "457fc18a4be90f439d64f96c5a4d6c8cce237404",
+      "role": "executable-governance-and-implementation-layer",
+      "implementationPr": "https://github.com/sankarshanmukhopadhyay/trust-graph-artifacts/pull/26",
+      "validationRuns": [
+        {
+          "name": "validate-repository-assurance",
+          "run": "https://github.com/sankarshanmukhopadhyay/trust-graph-artifacts/actions/runs/35822358611",
+          "conclusion": "success"
+        },
+        {
+          "name": "publish-docs",
+          "run": "https://github.com/sankarshanmukhopadhyay/trust-graph-artifacts/actions/runs/35822358749",
+          "conclusion": "success"
+        }
+      ],
+      "evidence": [
+        "docs/release-notes/v0.13.0.md",
+        "patterns/runtime-authority-envelope/README.md",
+        "validation/pressure-tests/composite_authority_invalidation.yaml"
+      ]
+    }
+  ],
+  "conformanceClaims": [
+    "declared-component-versions",
+    "explicit-authority-boundaries",
+    "resolvable-semantic-references-at-reviewed-baseline",
+    "resolvable-portable-contract-references-at-reviewed-baseline",
+    "action-specific-authority-at-material-commitment",
+    "collective-authority-lifecycle-invalidation",
+    "historical-verification-distinct-from-current-authorization",
+    "explicit-unknown-compatibility",
+    "auditable-validation-evidence",
+    "golden-path-positive-and-negative-tests"
+  ],
+  "unknownCompatibilityPolicy": "unsupported-until-new-receipt",
+  "humanAcceptance": {
+    "accepted": true,
+    "acceptedBy": "sankarshanmukhopadhyay",
+    "acceptedAt": "2026-09-23",
+    "evidence": "QBF Consulting Related project approval on 2026-09-23 authorized execution of the TSMS 2026.2 successor baseline and releases; final publication remains separately gated by owner-authored acceptance on governing issue #52."
+  },
+  "limitations": [
+    "The receipt attests to the pinned reviewed commits and their recorded CI evidence; it does not attest to future branch heads.",
+    "Repository conformance is not external certification.",
+    "A same-version change after a pinned commit is outside this receipt and requires a new review.",
+    "Historical validity of authority evidence does not by itself establish current authorization after a material authority-state change."
+  ]
+}

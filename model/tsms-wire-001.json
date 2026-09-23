@@ -1,11 +1,31 @@
 {
   "transactionId": "urn:tsms:wire:TSMS-WIRE-001",
   "case": "Delegated Authority Decision",
-  "baselineReceipt": "urn:tsms:baseline:2026-08-29",
+  "baselineReceipt": "urn:tsms:baseline:2026-09-23",
   "proposition": "A delegated effect is permitted only when authoritative TSMM semantics resolve, TIS portable contracts are available, TGA executable governance is bound, and authority, delegation, scope, evidence and relationship state permit the effect.",
-  "input": {"authority":"urn:example:authority:issuer-1","delegation":"urn:example:delegation:delegate-1","scope":["urn:example:effect:read-record"],"requestedEffect":"urn:example:effect:read-record","evidenceBundle":"urn:example:evidence:bundle-1","relationshipState":"current"},
-  "requiredSemanticConcepts": ["urn:tsmm:concept:authority","urn:tsmm:concept:delegation","urn:tsmm:concept:scope","urn:tsmm:concept:evidence-bundle","urn:tsmm:concept:trust-decision","urn:tsmm:concept:effect"],
-  "requiredPortableContracts": ["governance/authority-boundary.schema.json","evidence/evidence-bundle-manifest.schema.json","decision/decision-receipt.schema.json"],
+  "input": {
+    "authority": "urn:example:authority:issuer-1",
+    "delegation": "urn:example:delegation:delegate-1",
+    "scope": [
+      "urn:example:effect:read-record"
+    ],
+    "requestedEffect": "urn:example:effect:read-record",
+    "evidenceBundle": "urn:example:evidence:bundle-1",
+    "relationshipState": "current"
+  },
+  "requiredSemanticConcepts": [
+    "urn:tsmm:concept:authority",
+    "urn:tsmm:concept:delegation",
+    "urn:tsmm:concept:scope",
+    "urn:tsmm:concept:evidence-bundle",
+    "urn:tsmm:concept:trust-decision",
+    "urn:tsmm:concept:effect"
+  ],
+  "requiredPortableContracts": [
+    "governance/authority-boundary.schema.json",
+    "evidence/evidence-bundle-manifest.schema.json",
+    "decision/decision-receipt.schema.json"
+  ],
   "requiredGovernanceArtifact": "urn:tga:tsms:golden-path:delegated-authority-decision",
   "expectedDecision": "PERMIT"
 }

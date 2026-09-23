@@ -5,20 +5,30 @@ on:
     branches: [main]
     paths:
       - '.github/workflows/tsms-release-gate.yml'
+      - 'model/tsms-stack.json'
+      - 'model/tsms-baseline-lineage.json'
+      - 'model/tsms-baseline-receipt-2026.2.json'
       - 'model/tsms-wire-001.json'
-      - 'model/tsms-baseline-receipt.json'
+      - 'model/tsms-authority-at-commitment-001.json'
+      - 'model/tsms-collective-authority-001.json'
+      - 'scripts/tsms_receipts.py'
       - 'scripts/run_tsms_wire.py'
       - 'scripts/test_tsms_wire.py'
-      - 'scripts/check_tsms_drift.py'
-      - 'scripts/test_tsms_drift.py'
       - 'scripts/run_tsms_e2e.py'
       - 'scripts/test_tsms_e2e.py'
-      - 'scripts/run_tsms_renewal_transaction.py'
-      - 'scripts/test_tsms_renewal_transaction.py'
+      - 'scripts/run_tsms_2026_2_assurance.py'
       - 'scripts/build_tsms_release_candidate.py'
   pull_request:
+    branches: [main]
     paths:
       - '.github/workflows/tsms-release-gate.yml'
+      - 'model/tsms-stack.json'
+      - 'model/tsms-baseline-lineage.json'
+      - 'model/tsms-baseline-receipt-2026.2.json'
+      - 'model/tsms-authority-at-commitment-001.json'
+      - 'model/tsms-collective-authority-001.json'
+      - 'scripts/tsms_receipts.py'
+      - 'scripts/run_tsms_2026_2_assurance.py'
       - 'scripts/build_tsms_release_candidate.py'
   workflow_dispatch:
 
@@ -33,30 +43,35 @@ jobs:
       - uses: actions/setup-python@v7
         with:
           python-version: '3.12'
-      - name: Deterministic wire pressure tests
-        run: python3 scripts/test_tsms_wire.py
-      - name: Live pinned cross-repository wire transaction
-        run: python3 scripts/run_tsms_wire.py
+      - name: Validate baseline receipt and lineage
+        run: |
+          python3 scripts/validate_tsms_baseline.py
+          python3 scripts/validate_tsms_baseline_lineage.py
+          python3 scripts/test_tsms_baseline_lineage.py
+      - name: Retain original delegated-authority wire assurance
+        run: |
+          python3 scripts/test_tsms_wire.py
+          python3 scripts/run_tsms_wire.py
       - name: Canonical E2E conformance
         run: |
           python3 scripts/run_tsms_e2e.py
           python3 scripts/test_tsms_e2e.py
+      - name: Successor authority-at-commitment and lifecycle assurance
+        run: python3 scripts/run_tsms_2026_2_assurance.py
       - name: Drift pressure tests
         run: python3 scripts/test_tsms_drift.py
-      - name: Controlled renewal transaction
-        run: |
-          python3 scripts/run_tsms_renewal_transaction.py
-          python3 scripts/test_tsms_renewal_transaction.py
       - name: Build machine-readable release candidate manifest
         run: python3 scripts/build_tsms_release_candidate.py
-      - name: Upload TSMS release-gate evidence
+      - name: Upload TSMS 2026.2 release-gate evidence
         uses: actions/upload-artifact@v7
         with:
-          name: tsms-stack-2026.1-cashew-nut-evidence
+          name: tsms-stack-2026.2-alphonso-mango-evidence
           path: |
             artifacts/e2e/TSMS-WIRE-001/
             artifacts/e2e/TSMS-E2E-001/
-            artifacts/e2e/TSMS-RENEWAL-001/
+            artifacts/e2e/TSMS-2026.2/
+            artifacts/validation/tsms-baseline.json
+            artifacts/validation/tsms-baseline-lineage-tests.json
             artifacts/validation/tsms-drift-tests.json
-            artifacts/release/tsms-stack-2026.1.json
+            artifacts/release/tsms-stack-2026.2.json
           if-no-files-found: error

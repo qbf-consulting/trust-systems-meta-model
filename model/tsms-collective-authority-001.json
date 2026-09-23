@@ -1,0 +1,114 @@
+{
+  "caseId": "TSMS-COLLECTIVE-AUTH-001",
+  "proposition": "Collective authority remains current only while membership, threshold/exercise rules, exact-action binding, and required composition evidence are current; historical verification is preserved separately.",
+  "executableFixture": "validation/pressure-tests/composite_authority_invalidation.yaml",
+  "cases": [
+    {
+      "id": "current-2-of-3",
+      "threshold": 2,
+      "currentMembers": [
+        "a",
+        "b",
+        "c"
+      ],
+      "evidenceMembers": [
+        "a",
+        "b"
+      ],
+      "membershipState": "current",
+      "ruleState": "current",
+      "actionDigestMatches": true,
+      "expectedCurrent": "PERMIT",
+      "expectedHistorical": "PRESERVED"
+    },
+    {
+      "id": "insufficient-members",
+      "threshold": 2,
+      "currentMembers": [
+        "a",
+        "b",
+        "c"
+      ],
+      "evidenceMembers": [
+        "a"
+      ],
+      "membershipState": "current",
+      "ruleState": "current",
+      "actionDigestMatches": true,
+      "expectedCurrent": "DENY",
+      "expectedHistorical": "PRESERVED"
+    },
+    {
+      "id": "stale-membership",
+      "threshold": 2,
+      "currentMembers": [
+        "a",
+        "c",
+        "d"
+      ],
+      "evidenceMembers": [
+        "a",
+        "b"
+      ],
+      "membershipState": "stale",
+      "ruleState": "current",
+      "actionDigestMatches": true,
+      "expectedCurrent": "REASSESSMENT_REQUIRED",
+      "expectedHistorical": "PRESERVED"
+    },
+    {
+      "id": "stale-rule",
+      "threshold": 3,
+      "currentMembers": [
+        "a",
+        "b",
+        "c"
+      ],
+      "evidenceMembers": [
+        "a",
+        "b"
+      ],
+      "membershipState": "current",
+      "ruleState": "stale",
+      "actionDigestMatches": true,
+      "expectedCurrent": "REASSESSMENT_REQUIRED",
+      "expectedHistorical": "PRESERVED"
+    },
+    {
+      "id": "missing-rule-evidence",
+      "threshold": 2,
+      "currentMembers": [
+        "a",
+        "b",
+        "c"
+      ],
+      "evidenceMembers": [
+        "a",
+        "b"
+      ],
+      "membershipState": "current",
+      "ruleState": "missing",
+      "actionDigestMatches": true,
+      "expectedCurrent": "INDETERMINATE",
+      "expectedHistorical": "PRESERVED"
+    },
+    {
+      "id": "action-mismatch",
+      "threshold": 2,
+      "currentMembers": [
+        "a",
+        "b",
+        "c"
+      ],
+      "evidenceMembers": [
+        "a",
+        "b"
+      ],
+      "membershipState": "current",
+      "ruleState": "current",
+      "actionDigestMatches": false,
+      "expectedCurrent": "DENY",
+      "expectedHistorical": "PRESERVED"
+    }
+  ]
+}

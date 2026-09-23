@@ -4,7 +4,7 @@ ROOT=pathlib.Path(__file__).resolve().parents[1]
 spec=importlib.util.spec_from_file_location('e2e',ROOT/'scripts/run_tsms_e2e.py')
 e2e=importlib.util.module_from_spec(spec); spec.loader.exec_module(e2e)
 suite=e2e.load(ROOT/'model/tsms-e2e-suite.json')
-receipt=e2e.load(ROOT/'model/tsms-baseline-receipt.json')
+receipt=e2e.load(e2e.RECEIPT)
 lineage=e2e.load(ROOT/'model/tsms-baseline-lineage.json')
 
 cases=[]

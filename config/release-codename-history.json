@@ -5,6 +5,11 @@
       "version": "tsms-stack-2026.1",
       "codename": "Cashew-Nut",
       "status": "published"
+    },
+    {
+      "version": "tsms-stack-2026.2",
+      "codename": "Alphonso mango",
+      "status": "candidate"
     }
   ]
 }

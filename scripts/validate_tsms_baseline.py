@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import json, pathlib, re, sys, datetime
+from tsms_receipts import active_receipt_path
 ROOT=pathlib.Path(__file__).resolve().parents[1]
 manifest=json.loads((ROOT/'model/tsms-stack.json').read_text())
 expected={x['id']:x for x in manifest['candidateBaseline']['components']}
@@ -23,7 +24,7 @@ def validate(receipt):
     if 'Repository conformance is not external certification.' not in receipt.get('limitations',[]): errors.append('external certification non-claim missing')
     return errors
 cases=[
- ('model/tsms-baseline-receipt.json','validated'),
+ (str(active_receipt_path(ROOT).relative_to(ROOT)),'validated'),
  ('validation/tsms/version-mismatch.json','reject'),
  ('validation/tsms/unpinned-commit.json','reject'),
  ('validation/tsms/failed-validation.json','reject')]
@@ -32,7 +33,7 @@ for path,expected_disp in cases:
     data=json.loads((ROOT/path).read_text()); errors=validate(data); actual='reject' if errors else 'validated'
     results.append({'fixture':path,'expected':expected_disp,'actual':actual,'errors':errors,'status':'pass' if actual==expected_disp else 'fail'})
     if actual!=expected_disp: failures.append(f'{path}: expected {expected_disp}, got {actual}')
-out={'repository':'trust-systems-meta-model','profile':'tsms-baseline-receipt','baselineReceipt':'urn:tsms:baseline:2026-08-29','status':'fail' if failures else 'pass','results':results,'limitations':['Validation proves receipt consistency against the local TSMS manifest; remote future branch state is outside the receipt.'],'executedAt':datetime.datetime.now(datetime.timezone.utc).isoformat()}
+out={'repository':'trust-systems-meta-model','profile':'tsms-baseline-receipt','baselineReceipt':json.loads(active_receipt_path(ROOT).read_text()).get('receiptId'),'status':'fail' if failures else 'pass','results':results,'limitations':['Validation proves receipt consistency against the local TSMS manifest; remote future branch state is outside the receipt.'],'executedAt':datetime.datetime.now(datetime.timezone.utc).isoformat()}
 (ROOT/'artifacts/validation').mkdir(parents=True,exist_ok=True)
 (ROOT/'artifacts/validation/tsms-baseline.json').write_text(json.dumps(out,indent=2)+'\n')
 if failures:

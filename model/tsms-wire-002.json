@@ -1,0 +1,70 @@
+{
+  "caseId": "TSMS-WIRE-002",
+  "title": "Authority at Material Commitment",
+  "baselineReceipt": "urn:tsms:baseline:2026-09-23",
+  "proposition": "A valid identity, signature or general mandate is insufficient for a material commitment unless current authority is valid for the exact action, scope, lifecycle state and required approvals at evaluation time.",
+  "requiredPortableContract": "governance/authority-at-commitment.schema.json",
+  "requiredExecutableSurface": "patterns/runtime-authority-envelope/README.md",
+  "cases": [
+    {
+      "id": "A2C-001",
+      "authorityState": "active",
+      "exactActionBound": true,
+      "scopeAllowed": true,
+      "approvalRequired": true,
+      "approvalPresent": true,
+      "constraints": "satisfied",
+      "expected": "PERMIT"
+    },
+    {
+      "id": "A2C-002",
+      "authorityState": "unknown",
+      "exactActionBound": true,
+      "scopeAllowed": true,
+      "approvalRequired": false,
+      "approvalPresent": false,
+      "constraints": "satisfied",
+      "expected": "INDETERMINATE"
+    },
+    {
+      "id": "A2C-003",
+      "authorityState": "active",
+      "exactActionBound": false,
+      "scopeAllowed": true,
+      "approvalRequired": false,
+      "approvalPresent": false,
+      "constraints": "satisfied",
+      "expected": "REJECT"
+    },
+    {
+      "id": "A2C-004",
+      "authorityState": "active",
+      "exactActionBound": true,
+      "scopeAllowed": false,
+      "approvalRequired": false,
+      "approvalPresent": false,
+      "constraints": "failed",
+      "expected": "REJECT"
+    },
+    {
+      "id": "A2C-005",
+      "authorityState": "revoked",
+      "exactActionBound": true,
+      "scopeAllowed": true,
+      "approvalRequired": false,
+      "approvalPresent": false,
+      "constraints": "satisfied",
+      "expected": "REJECT"
+    },
+    {
+      "id": "A2C-006",
+      "authorityState": "active",
+      "exactActionBound": true,
+      "scopeAllowed": true,
+      "approvalRequired": true,
+      "approvalPresent": false,
+      "constraints": "satisfied",
+      "expected": "REJECT"
+    }
+  ]
+}
