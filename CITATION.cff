@@ -2,7 +2,7 @@ cff-version: 1.2.0
 title: "Trust Systems Meta Model"
 message: "Please cite the TSMM version used with the metadata below."
 type: generic
-version: "0.24.0"
+version: "0.25.0"
 authors:
   - family-names: Mukhopadhyay
     given-names: Sankarshan
