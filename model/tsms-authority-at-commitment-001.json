@@ -1,0 +1,114 @@
+{
+  "caseId": "TSMS-AUTH-COMMIT-001",
+  "proposition": "A material commitment is permitted only when the exact action is bound to current action-specific authority, all material constraints are satisfied, and any required approval is present and bound to the same action.",
+  "portableContract": "governance/authority-at-commitment.schema.json",
+  "executableControl": "control.authority-at-commitment",
+  "positive": {
+    "identityAuthenticated": true,
+    "signatureValid": true,
+    "authorityState": "active",
+    "scopeAllowed": true,
+    "actionDigestMatches": true,
+    "approvalRequired": true,
+    "approvalPresent": true,
+    "approvalDigestMatches": true,
+    "constraints": [
+      "satisfied",
+      "satisfied"
+    ],
+    "expected": "PERMIT"
+  },
+  "negativeCases": [
+    {
+      "id": "identity-only",
+      "identityAuthenticated": true,
+      "signatureValid": true,
+      "authorityState": "unknown",
+      "scopeAllowed": true,
+      "actionDigestMatches": true,
+      "approvalRequired": false,
+      "approvalPresent": false,
+      "approvalDigestMatches": false,
+      "constraints": [
+        "satisfied"
+      ],
+      "expected": "INDETERMINATE"
+    },
+    {
+      "id": "out-of-scope",
+      "identityAuthenticated": true,
+      "signatureValid": true,
+      "authorityState": "active",
+      "scopeAllowed": false,
+      "actionDigestMatches": true,
+      "approvalRequired": false,
+      "approvalPresent": false,
+      "approvalDigestMatches": false,
+      "constraints": [
+        "satisfied"
+      ],
+      "expected": "DENY"
+    },
+    {
+      "id": "revoked",
+      "identityAuthenticated": true,
+      "signatureValid": true,
+      "authorityState": "revoked",
+      "scopeAllowed": true,
+      "actionDigestMatches": true,
+      "approvalRequired": false,
+      "approvalPresent": false,
+      "approvalDigestMatches": false,
+      "constraints": [
+        "satisfied"
+      ],
+      "expected": "DENY"
+    },
+    {
+      "id": "missing-approval",
+      "identityAuthenticated": true,
+      "signatureValid": true,
+      "authorityState": "active",
+      "scopeAllowed": true,
+      "actionDigestMatches": true,
+      "approvalRequired": true,
+      "approvalPresent": false,
+      "approvalDigestMatches": false,
+      "constraints": [
+        "satisfied"
+      ],
+      "expected": "DENY"
+    },
+    {
+      "id": "approval-action-mismatch",
+      "identityAuthenticated": true,
+      "signatureValid": true,
+      "authorityState": "active",
+      "scopeAllowed": true,
+      "actionDigestMatches": true,
+      "approvalRequired": true,
+      "approvalPresent": true,
+      "approvalDigestMatches": false,
+      "constraints": [
+        "satisfied"
+      ],
+      "expected": "DENY"
+    },
+    {
+      "id": "constraint-indeterminate",
+      "identityAuthenticated": true,
+      "signatureValid": true,
+      "authorityState": "active",
+      "scopeAllowed": true,
+      "actionDigestMatches": true,
+      "approvalRequired": false,
+      "approvalPresent": false,
+      "approvalDigestMatches": false,
+      "constraints": [
+        "satisfied",
+        "indeterminate"
+      ],
+      "expected": "INDETERMINATE"
+    }
+  ]
+}
