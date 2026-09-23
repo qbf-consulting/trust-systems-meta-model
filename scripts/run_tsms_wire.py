@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import datetime, hashlib, json, pathlib, sys, urllib.request
-ROOT=pathlib.Path(__file__).resolve().parents[1]; CASE=json.loads((ROOT/'model/tsms-wire-001.json').read_text()); RECEIPT=json.loads((ROOT/'model/tsms-baseline-receipt.json').read_text())
+from tsms_receipts import load_active_receipt
+ROOT=pathlib.Path(__file__).resolve().parents[1]; CASE=json.loads((ROOT/'model/tsms-wire-001.json').read_text()); RECEIPT=load_active_receipt(ROOT)
 def fetch(repo,commit,path):
  req=urllib.request.Request(f'https://raw.githubusercontent.com/{repo}/{commit}/{path}',headers={'User-Agent':'tsms-wire-001'}); return urllib.request.urlopen(req,timeout=15).read().decode()
 def digest(obj): return hashlib.sha256(json.dumps(obj,sort_keys=True,separators=(',',':')).encode()).hexdigest()
