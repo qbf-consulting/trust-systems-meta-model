@@ -16,7 +16,15 @@ FRONTMATTER_RE = re.compile(r"^---\n(.*?)\n---\n", re.DOTALL)
 APP_VERSION_RE = re.compile(r"^applicable_version:\s*(.+)$", re.MULTILINE)
 
 IGNORE_PREFIXES = ("http://", "https://", "mailto:", "#")
-IGNORE_FILES_FOR_VERSION = {p for p in (ROOT / "releases").glob("v*.md") if p.name != f"{VERSION}.md"}
+IGNORE_FILES_FOR_VERSION = {p for p in (ROOT / "releases").glob("v*.md")}
+
+
+def semver(value: str) -> tuple[int, int, int] | None:
+    value = value.strip().strip('"').strip("'").removeprefix("v")
+    match = re.fullmatch(r"(\d+)\.(\d+)\.(\d+)", value)
+    if not match:
+        return None
+    return tuple(int(part) for part in match.groups())
 
 
 def check_frontmatter_version(path: Path) -> list[str]:
@@ -29,10 +37,20 @@ def check_frontmatter_version(path: Path) -> list[str]:
         return errors
     fm = match.group(1)
     version_match = APP_VERSION_RE.search(fm)
-    if version_match:
-        value = version_match.group(1).strip()
-        if value != VERSION:
-            errors.append(f"{path.relative_to(ROOT)} has applicable_version {value}, expected {VERSION}")
+    if not version_match:
+        return errors
+
+    value = version_match.group(1).strip()
+    declared = semver(value)
+    current = semver(VERSION)
+    if declared is None:
+        errors.append(f"{path.relative_to(ROOT)} has invalid applicable_version {value}")
+    elif current is None:
+        errors.append(f"VERSION {VERSION} is not valid semantic version metadata")
+    elif declared > current:
+        errors.append(
+            f"{path.relative_to(ROOT)} has future applicable_version {value}, current release is {VERSION}"
+        )
     return errors
 
 
@@ -64,7 +82,9 @@ def main() -> None:
         for error in errors:
             print(error)
         raise SystemExit(1)
-    print(f"Checked {len(MARKDOWN_FILES)} markdown files: links and applicable_version metadata passed.")
+    print(
+        f"Checked {len(MARKDOWN_FILES)} markdown files: links and non-future applicable_version metadata passed."
+    )
 
 
 if __name__ == "__main__":
