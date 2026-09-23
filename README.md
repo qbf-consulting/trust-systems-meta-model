@@ -1,12 +1,12 @@
 # Trust Systems Meta-Model (TSMM)
 
-[![Version](https://img.shields.io/badge/version-v0.24.0-blue)](VERSION)
+[![Version](https://img.shields.io/badge/version-v0.25.0-blue)](VERSION)
 [![Status](https://img.shields.io/badge/status-candidate%20specification-purple)](docs/repository-status.md)
 [![Validation](https://github.com/qbf-consulting/trust-systems-meta-model/actions/workflows/validate.yml/badge.svg)](https://github.com/qbf-consulting/trust-systems-meta-model/actions/workflows/validate.yml)
 
 TSMM is a portable semantic reference model for designing, comparing, implementing, and assuring trust systems. It makes identity, authority, delegation, evidence, assurance, governance, lifecycle, decision and effect semantics explicit enough to review, validate and bind to implementation technologies.
 
-**Current version:** `v0.24.0` — Candidate Specification  
+**Current version:** `v0.25.0` — Candidate Specification  
 **Author and maintainer:** Sankarshan Mukhopadhyay, QBF Consulting LLP — `sankarshan@qbfconsulting.digital`  
 **Project stewardship:** QBF Consulting LLP  
 **Canonical repository:** https://github.com/qbf-consulting/trust-systems-meta-model  
@@ -27,7 +27,7 @@ TSMM is a portable semantic reference model for designing, comparing, implementi
 - [TSMS adopter guide](docs/tsms-adopter-guide.md)
 - [Stewardship](docs/stewardship.md)
 - [Citation metadata](CITATION.cff)
-- [v0.24.0 release notes](releases/v0.24.0.md)
+- [v0.25.0 release notes](releases/v0.25.0.md)
 
 ## Authority boundary
 
@@ -49,7 +49,7 @@ The TRQP Assurance Hub owns the coordinated Stack release declaration. TRQP Conf
 
 ## Status
 
-`v0.24.0` is the current Candidate Specification. Candidate status means the model is suitable for structured evaluation and implementation experiments, but remains subject to refinement before a future stable release.
+`v0.25.0` is the current Candidate Specification. Candidate status means the model is suitable for structured evaluation and implementation experiments, but remains subject to refinement before a future stable release.
 
 Machine-readable status and authority declarations are available in:
 

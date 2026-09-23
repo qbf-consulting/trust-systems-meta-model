@@ -4,7 +4,7 @@ portfolio_tier: flagship
 lifecycle: active
 role: canonical-semantic-model
 stability: provisional
-current_version: "v0.24.0"
+current_version: "v0.25.0"
 authority:
   owns:
     - canonical-concepts
