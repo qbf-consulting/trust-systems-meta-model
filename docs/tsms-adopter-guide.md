@@ -35,13 +35,13 @@ TSMM coordinates TSMS but does not acquire authority over TIS or TGA. If adoptio
 
 ## Start with the released stack baseline
 
-The first TSMS stack release candidate is `tsms-stack-2026.1` — **Cashew-Nut**. It is bound to the accepted immutable baseline receipt in `model/tsms-baseline-receipt.json`:
+The current TSMS stack release candidate is `tsms-stack-2026.2` — **Alphonso mango**. The active receipt is resolved through `model/tsms-baseline-lineage.json` and stored in `model/tsms-baseline-receipt-2026.2.json`. The 2026.1 receipt remains immutable historical evidence:
 
 | Layer | Version | Accepted commit |
 | --- | --- | --- |
-| TSMM | `v0.24.0` | `2867010121e8a61971184d8fe7d3306b985e5884` |
-| TIS | `v0.14.1` | `d25539932181e6d883f5bec261daaf011f740059` |
-| TGA | `v0.12.1` | `f0bdc309a691a7be8dca3b48fed8ac1555219bec` |
+| TSMM | `v0.25.0` | `a673971d7a3e10cff5ceb679738de4ce5bce6857` |
+| TIS | `v0.15.0` | `e4fbe60e6810f108b593c76ac2b970093a59a5e1` |
+| TGA | `v0.13.0` | `457fc18a4be90f439d64f96c5a4d6c8cce237404` |
 
 Do not substitute later branch heads and assume equivalent compatibility. TSMS compatibility is evidence-backed and commit-specific. Same-version changes, declaration drift, or unavailable authoritative state can withdraw inherited compatibility.
 
@@ -104,13 +104,15 @@ A TSMS result is useful because the judgment can be inspected. The main evidence
 
 | Evidence | Purpose |
 | --- | --- |
-| `model/tsms-baseline-receipt.json` | accepted component versions, commits and validation evidence |
+| `model/tsms-baseline-receipt.json` | immutable 2026.1 predecessor receipt |
+| `model/tsms-baseline-receipt-2026.2.json` | active accepted component versions, commits and validation evidence |
 | `artifacts/e2e/TSMS-WIRE-001/wire-transaction-receipt.json` | live cross-repository transaction result and declaration digests |
 | `artifacts/e2e/TSMS-WIRE-001/pressure-tests.json` | positive and negative wire cases |
 | `artifacts/e2e/TSMS-E2E-001/evidence-bundle.json` | canonical end-to-end conformance evidence |
 | `artifacts/validation/tsms-drift-tests.json` | drift classification pressure tests |
 | `artifacts/e2e/TSMS-RENEWAL-001/transaction-evidence.json` | compatibility withdrawal and restoration experiment |
-| `artifacts/release/tsms-stack-2026.1.json` | release-candidate evidence manifest |
+| `artifacts/e2e/TSMS-2026.2/assurance-evidence.json` | exact-action authority and collective-authority lifecycle evidence |
+| `artifacts/release/tsms-stack-2026.2.json` | release-candidate evidence manifest |
 
 For a release run, the `TSMS Release Gate` workflow packages these artifacts into one retained workflow artifact.
 
@@ -225,3 +227,11 @@ Your binding should point to the TSMM concepts, TIS contracts and TGA compositio
 The TSMS release gate tests the claim that the released stack can execute the canonical cross-repository wire transaction, reject defined invalid cases, detect drift, and restore compatibility only through fresh evidence and acceptance. Green CI is necessary but not sufficient: the publication decision remains an explicit human governance event.
 
 For the architecture and machine-readable stack surfaces, continue with [Trust Systems Modelling Stack (TSMS)](tsms.md). For TSMM-only adoption, return to [Adoption](adoption.md).
+
+## New assurance cases in 2026.2
+
+The successor baseline retains the original delegated-authority wire case and adds two explicit adoption patterns.
+
+**Authority at commitment:** authentication, identity, signature, reputation, or a broad mandate are not substitutes for current authority over the exact material action. Scope, lifecycle state, exact-action binding, material constraints, and required approval evidence are evaluated at commitment time.
+
+**Collective-authority lifecycle:** previously valid collective-authority evidence must be reassessed when membership, threshold, or exercise rules materially change. Historical verification may remain available, but it does not silently become current authorization.
