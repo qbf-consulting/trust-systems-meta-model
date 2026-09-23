@@ -1,0 +1,55 @@
+name: Publish TSMM Component Release
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'VERSION'
+      - 'releases/v0.25.0.md'
+      - '.github/workflows/publish-component-release.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: publish-tsmm-v0.25.0
+  cancel-in-progress: false
+
+env:
+  VERSION: '0.25.0'
+  TAG: 'v0.25.0'
+  RELEASE_TITLE: 'TSMM v0.25.0 — Action-Specific Authority and Lifecycle-Safe Governance'
+  RELEASE_NOTES: 'releases/v0.25.0.md'
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - name: Verify release source and candidate gate
+        run: |
+          set -euo pipefail
+          test "$(tr -d '[:space:]' < VERSION)" = "$VERSION"
+          test -s "$RELEASE_NOTES"
+          python -m pip install -r requirements-dev.txt
+          make candidate-check
+      - name: Publish or update GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            gh release edit "$TAG" --title "$RELEASE_TITLE" --notes-file "$RELEASE_NOTES" --latest
+          else
+            gh release create "$TAG" --target "$GITHUB_SHA" --title "$RELEASE_TITLE" --notes-file "$RELEASE_NOTES" --latest
+          fi
+          gh release view "$TAG" --json url,tagName,name,targetCommitish,isDraft,isPrerelease,isLatest
+          test "$(gh release view "$TAG" --json isDraft --jq '.isDraft')" = "false"
+          test "$(gh release view "$TAG" --json isPrerelease --jq '.isPrerelease')" = "false"
+          test "$(gh release view "$TAG" --json isLatest --jq '.isLatest')" = "true"
