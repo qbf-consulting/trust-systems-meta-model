@@ -5,6 +5,8 @@ on:
     branches: [main]
     paths:
       - '.github/workflows/tsms-publish-release.yml'
+      - 'releases/tsms-stack-2026.2.md'
+      - 'config/release-codename-history.json'
   workflow_dispatch:
 
 permissions:
@@ -13,16 +15,15 @@ permissions:
   issues: write
 
 concurrency:
-  group: tsms-stack-2026.1-publication
+  group: tsms-stack-2026.2-publication
   cancel-in-progress: false
 
 env:
-  TAG: tsms-stack-2026.1
-  CODENAME: Cashew-Nut
-  RELEASE_TITLE: TSMS Stack 2026.1 — Cashew-Nut
-  RELEASE_NOTES: releases/tsms-stack-2026.1.md
-  RELEASE_ISSUE: '19'
-  PROGRAMME_ISSUE: '9'
+  TAG: tsms-stack-2026.2
+  CODENAME: Alphonso mango
+  RELEASE_TITLE: TSMS Stack 2026.2 — Alphonso mango
+  RELEASE_NOTES: releases/tsms-stack-2026.2.md
+  RELEASE_ISSUE: '52'
 
 jobs:
   publish:
@@ -31,36 +32,35 @@ jobs:
       - uses: actions/checkout@v7
         with:
           fetch-depth: 0
-
       - uses: actions/setup-python@v7
         with:
           python-version: '3.12'
 
-      - name: Verify persisted release codename identity
-        shell: bash
+      - name: Verify persisted release identity
         run: |
           set -euo pipefail
           python3 scripts/release_codenames.py validate
           binding="$(python3 scripts/release_codenames.py select --version "$TAG" --seed existing)"
           BINDING="$binding" python3 - <<'PY'
           import json, os
-          data = json.loads(os.environ['BINDING'])
-          expected = os.environ['CODENAME']
-          if data.get('codename') != expected or data.get('existing') is not True:
-              raise SystemExit(f"release identity is not persisted as expected: {data!r}")
+          data=json.loads(os.environ['BINDING'])
+          if data.get('codename') != os.environ['CODENAME'] or data.get('existing') is not True:
+              raise SystemExit(f"release identity mismatch: {data!r}")
           print(f"persisted release identity: {data['version']} — {data['codename']}")
           PY
 
-      - name: Re-establish executable release evidence
+      - name: Re-establish 2026.2 executable evidence
         run: |
           set -euo pipefail
+          python3 scripts/validate_tsms_baseline.py
+          python3 scripts/validate_tsms_baseline_lineage.py
+          python3 scripts/test_tsms_baseline_lineage.py
           python3 scripts/test_tsms_wire.py
           python3 scripts/run_tsms_wire.py
           python3 scripts/run_tsms_e2e.py
           python3 scripts/test_tsms_e2e.py
+          python3 scripts/run_tsms_2026_2_assurance.py
           python3 scripts/test_tsms_drift.py
-          python3 scripts/run_tsms_renewal_transaction.py
-          python3 scripts/test_tsms_renewal_transaction.py
           python3 scripts/build_tsms_release_candidate.py
 
       - name: Verify publication surfaces
@@ -69,7 +69,8 @@ jobs:
           test -s "$RELEASE_NOTES"
           test -s docs/tsms-adopter-guide.md
           test -s docs/tsms-assurance.md
-          test -s artifacts/release/tsms-stack-2026.1.json
+          test -s model/tsms-baseline-receipt-2026.2.json
+          test -s artifacts/release/tsms-stack-2026.2.json
 
       - name: Verify explicit human release acceptance
         env:
@@ -77,68 +78,40 @@ jobs:
         run: |
           set -euo pipefail
           accepted="$({ gh api --paginate "repos/${GITHUB_REPOSITORY}/issues/${RELEASE_ISSUE}/comments" --jq '.[] | select(.user.login == "sankarshanmukhopadhyay") | .body'; } | grep -Fxc '**Human release decision: ACCEPTED FOR PUBLICATION.**' || true)"
-          if [ "$accepted" -lt 1 ]; then
-            echo 'No owner-authored explicit publication acceptance found on release issue.' >&2
-            exit 1
-          fi
+          test "$accepted" -ge 1 || { echo 'No explicit owner-authored publication acceptance on issue #52.' >&2; exit 1; }
 
-      - name: Publish or verify GitHub Release
+      - name: Publish or update GitHub Release
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
           if gh release view "$TAG" >/dev/null 2>&1; then
-            existing_target="$(gh release view "$TAG" --json targetCommitish --jq '.targetCommitish')"
-            existing_name="$(gh release view "$TAG" --json name --jq '.name')"
-            test "$existing_name" = "$RELEASE_TITLE" || {
-              echo "Existing release name '$existing_name' differs from persisted identity '$RELEASE_TITLE'." >&2
-              exit 1
-            }
-            echo "Release already exists with targetCommitish=${existing_target}; publication is idempotent."
+            gh release edit "$TAG" --title "$RELEASE_TITLE" --notes-file "$RELEASE_NOTES" --latest
           else
-            gh release create "$TAG" \
-              --target "$GITHUB_SHA" \
-              --title "$RELEASE_TITLE" \
-              --notes-file "$RELEASE_NOTES"
+            gh release create "$TAG" --target "$GITHUB_SHA" --title "$RELEASE_TITLE" --notes-file "$RELEASE_NOTES" --latest
           fi
+          test "$(gh release view "$TAG" --json isDraft --jq '.isDraft')" = "false"
+          test "$(gh release view "$TAG" --json isPrerelease --jq '.isPrerelease')" = "false"
+          test "$(gh api "repos/$GITHUB_REPOSITORY/releases/latest" --jq '.tag_name')" = "$TAG"
           gh release view "$TAG" --json url,tagName,name,targetCommitish,isDraft,isPrerelease
 
-      - name: Close release and programme issues after publication
+      - name: Record publication and close governing issue
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
           release_url="$(gh release view "$TAG" --json url --jq '.url')"
-          receipt="artifacts/release/tsms-stack-2026.1.json"
-          evidence_sha="$(sha256sum "$receipt" | awk '{print $1}')"
-          printf -v closure_comment '%s\n\n%s\n\n%s\n%s\n%s\n%s\n%s\n%s\n\n%s' \
-            '## TSMS release publication complete' \
-            "Published **${RELEASE_TITLE}** as \`${TAG}\`." \
-            "- Release: ${release_url}" \
-            "- Publication workflow commit: \`${GITHUB_SHA}\`" \
-            "- Release manifest: \`${receipt}\`" \
-            "- Release manifest SHA-256: \`${evidence_sha}\`" \
-            '- Release gates were re-executed successfully immediately before publication.' \
-            "- Explicit owner-authored human release acceptance was verified from #${RELEASE_ISSUE}." \
-            'This closure records successful publication; it does not transfer authority among TSMM, TIS, or TGA. Future drift must re-enter the evidence and renewal lifecycle.'
+          latest="$(gh api "repos/$GITHUB_REPOSITORY/releases/latest" --jq '.tag_name')"
+          comment="## TSMS Stack 2026.2 publication complete
 
-          for issue in "$RELEASE_ISSUE" "$PROGRAMME_ISSUE"; do
-            state="$(gh issue view "$issue" --json state --jq '.state')"
-            if [ "$state" = 'OPEN' ]; then
-              gh issue close "$issue" --comment "$closure_comment"
-            fi
-          done
+Published **$RELEASE_TITLE** as `$TAG`.
 
-      - name: Publication summary
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          {
-            echo '## TSMS publication complete'
-            echo
-            echo "- Release: $(gh release view "$TAG" --json url --jq '.url')"
-            echo "- Tag: \`$TAG\`"
-            echo "- Target: \`$GITHUB_SHA\`"
-            echo "- Persisted codename: \`$CODENAME\`"
-            echo '- Release issue and governing programme issue are closed only after release verification.'
-          } >> "$GITHUB_STEP_SUMMARY"
+- Release: $release_url
+- Publication commit: `$GITHUB_SHA`
+- Latest release: `$latest`
+- Active receipt: `urn:tsms:baseline:2026-09-23`
+- Component pins: TSMM v0.25.0 / TIS v0.15.0 / TGA v0.13.0
+- Publication re-executed the full 2026.2 assurance suite successfully.
+
+The predecessor 2026.1 receipt remains immutable historical evidence. This publication does not transfer authority among TSMM, TIS or TGA and does not constitute external certification."
+          gh issue close "$RELEASE_ISSUE" --comment "$comment"
