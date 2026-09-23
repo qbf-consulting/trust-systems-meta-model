@@ -95,25 +95,25 @@ jobs:
           test "$(gh api "repos/$GITHUB_REPOSITORY/releases/latest" --jq '.tag_name')" = "$TAG"
           gh release view "$TAG" --json url,tagName,name,targetCommitish,isDraft,isPrerelease
 
-      - name: Record publication and close governing issue
+      - name: Record publication and reconcile governing issue
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
           release_url="$(gh release view "$TAG" --json url --jq '.url')"
           latest="$(gh api "repos/$GITHUB_REPOSITORY/releases/latest" --jq '.tag_name')"
-          cat > /tmp/closure.md <<EOF
-          ## TSMS Stack 2026.2 publication complete
-
-          Published **$RELEASE_TITLE** as `$TAG`.
-
-          - Release: $release_url
-          - Publication commit: `$GITHUB_SHA`
-          - Latest release: `$latest`
-          - Active receipt: `urn:tsms:baseline:2026-09-23`
-          - Component pins: TSMM v0.25.0 / TIS v0.15.0 / TGA v0.13.0
-          - Publication re-executed the full 2026.2 assurance suite successfully.
-
-          The predecessor 2026.1 receipt remains immutable historical evidence. This publication does not transfer authority among TSMM, TIS or TGA and does not constitute external certification.
-          EOF
-          gh issue close "$RELEASE_ISSUE" --comment-file /tmp/closure.md
+          printf -v comment '%s\n\n%s\n\n%s\n%s\n%s\n%s\n%s\n%s\n\n%s' \
+            '## TSMS Stack 2026.2 publication complete' \
+            "Published $RELEASE_TITLE as $TAG." \
+            "- Release: $release_url" \
+            "- Publication commit: $GITHUB_SHA" \
+            "- Latest release: $latest" \
+            '- Active receipt: urn:tsms:baseline:2026-09-23' \
+            '- Component pins: TSMM v0.25.0 / TIS v0.15.0 / TGA v0.13.0' \
+            '- Publication re-executed the full 2026.2 assurance suite successfully.' \
+            'The predecessor 2026.1 receipt remains immutable historical evidence. This publication does not transfer authority among TSMM, TIS or TGA and does not constitute external certification.'
+          gh api "repos/$GITHUB_REPOSITORY/issues/$RELEASE_ISSUE/comments" -f body="$comment" >/dev/null
+          state="$(gh api "repos/$GITHUB_REPOSITORY/issues/$RELEASE_ISSUE" --jq '.state')"
+          if [ "$state" = "open" ]; then
+            gh api -X PATCH "repos/$GITHUB_REPOSITORY/issues/$RELEASE_ISSUE" -f state=closed -f state_reason=completed >/dev/null
+          fi
