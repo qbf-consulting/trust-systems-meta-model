@@ -102,16 +102,18 @@ jobs:
           set -euo pipefail
           release_url="$(gh release view "$TAG" --json url --jq '.url')"
           latest="$(gh api "repos/$GITHUB_REPOSITORY/releases/latest" --jq '.tag_name')"
-          comment="## TSMS Stack 2026.2 publication complete
+          cat > /tmp/closure.md <<EOF
+          ## TSMS Stack 2026.2 publication complete
 
-Published **$RELEASE_TITLE** as `$TAG`.
+          Published **$RELEASE_TITLE** as `$TAG`.
 
-- Release: $release_url
-- Publication commit: `$GITHUB_SHA`
-- Latest release: `$latest`
-- Active receipt: `urn:tsms:baseline:2026-09-23`
-- Component pins: TSMM v0.25.0 / TIS v0.15.0 / TGA v0.13.0
-- Publication re-executed the full 2026.2 assurance suite successfully.
+          - Release: $release_url
+          - Publication commit: `$GITHUB_SHA`
+          - Latest release: `$latest`
+          - Active receipt: `urn:tsms:baseline:2026-09-23`
+          - Component pins: TSMM v0.25.0 / TIS v0.15.0 / TGA v0.13.0
+          - Publication re-executed the full 2026.2 assurance suite successfully.
 
-The predecessor 2026.1 receipt remains immutable historical evidence. This publication does not transfer authority among TSMM, TIS or TGA and does not constitute external certification."
-          gh issue close "$RELEASE_ISSUE" --comment "$comment"
+          The predecessor 2026.1 receipt remains immutable historical evidence. This publication does not transfer authority among TSMM, TIS or TGA and does not constitute external certification.
+          EOF
+          gh issue close "$RELEASE_ISSUE" --comment-file /tmp/closure.md
