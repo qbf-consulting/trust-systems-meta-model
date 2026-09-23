@@ -7,7 +7,7 @@ permalink: /releases/tsms-stack-2026.2.html
 
 **Release ID:** `tsms-stack-2026.2`  
 **Codename:** Alphonso mango  
-**Status:** candidate pending final owner acceptance and publication  
+**Status:** published  
 **Governing issue:** [TSMM #52](https://github.com/qbf-consulting/trust-systems-meta-model/issues/52)
 
 TSMS Stack 2026.2 is the successor evidence-backed release of the Trust Systems Modelling Stack. It renews the accepted cross-repository baseline around two material governance propositions: **authority at the exact point of commitment** and **collective-authority lifecycle invalidation**.
@@ -103,7 +103,7 @@ The `TSMS Release Gate` must succeed on the merged `main` state before publicati
 6. drift pressure tests; and
 7. generation of `artifacts/release/tsms-stack-2026.2.json`.
 
-The final main-branch workflow run is recorded in issue #52 after merge.
+Publication is controlled by the main-branch release workflow and issue #52 acceptance record.
 
 ## Evidence surfaces
 
