@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 import json, pathlib, sys
+from tsms_receipts import active_receipt_path
 
 ROOT=pathlib.Path(__file__).resolve().parents[1]
 SUITE=ROOT/'model/tsms-e2e-suite.json'
-RECEIPT=ROOT/'model/tsms-baseline-receipt.json'
+RECEIPT=active_receipt_path(ROOT)
 LINEAGE=ROOT/'model/tsms-baseline-lineage.json'
 OUT=ROOT/'artifacts/e2e/TSMS-E2E-001/evidence-bundle.json'
 
