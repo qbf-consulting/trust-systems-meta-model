@@ -49,7 +49,7 @@ jobs:
           else
             gh release create "$TAG" --target "$GITHUB_SHA" --title "$RELEASE_TITLE" --notes-file "$RELEASE_NOTES" --latest
           fi
-          gh release view "$TAG" --json url,tagName,name,targetCommitish,isDraft,isPrerelease,isLatest
+          gh release view "$TAG" --json url,tagName,name,targetCommitish,isDraft,isPrerelease
           test "$(gh release view "$TAG" --json isDraft --jq '.isDraft')" = "false"
           test "$(gh release view "$TAG" --json isPrerelease --jq '.isPrerelease')" = "false"
-          test "$(gh release view "$TAG" --json isLatest --jq '.isLatest')" = "true"
+          test "$(gh api "repos/$GITHUB_REPOSITORY/releases/latest" --jq '.tag_name')" = "$TAG"
