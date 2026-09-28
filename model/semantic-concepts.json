@@ -1,7 +1,7 @@
 {
   "$schema": "../schemas/tsmm-semantic-concept-registry.schema.json",
   "registryId": "urn:tsmm:registry:semantic-concepts",
-  "version": "v0.24.0",
+  "version": "v0.26.0",
   "authority": {
     "repository": "trust-systems-meta-model",
     "scope": "canonical-semantics"
@@ -105,6 +105,20 @@
       "label": "Redress",
       "status": "active",
       "definition": "A governed path for contesting, reviewing, correcting, or remedying a trust-system outcome."
+    },
+    {
+      "id": "urn:tsmm:concept:decision-transition-basis",
+      "type": "DecisionTransitionBasis",
+      "label": "DecisionTransitionBasis",
+      "status": "active",
+      "definition": "The inspectable semantic category identifying which material input change caused a trust decision to transition, without implying that authority changed."
+    },
+    {
+      "id": "urn:tsmm:concept:material-unresolved-condition",
+      "type": "MaterialUnresolvedCondition",
+      "label": "MaterialUnresolvedCondition",
+      "status": "active",
+      "definition": "A material proposition relevant to a trust decision or effect that remains unresolved until an admissible authority, evidence, policy, lifecycle, proposition, or correction event changes its basis."
     }
   ]
 }
