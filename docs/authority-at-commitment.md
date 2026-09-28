@@ -1,7 +1,7 @@
 ---
 owner: maintainers
-last_reviewed: 2026-09-22
-applicable_version: 0.24.0
+last_reviewed: 2026-09-28
+applicable_version: 0.26.0
 tier: 1
 title: Authority at Commitment
 permalink: /authority-at-commitment.html
@@ -60,6 +60,10 @@ Authority validity, expiry, suspension and revocation are evaluated against an e
 
 A downstream authority exercise MUST NOT enlarge the authority available from its source. Scope, counterparty, value, time and other material constraints remain bounded by the applicable Authority/Delegation chain.
 
+### TSMM-AAC-04A — representation does not amplify authority
+
+Communication, repetition, endorsement, aggregation, projection, republication, or transformation MUST NOT create authority that cannot be traced to competent authoritative provenance and applicable scope. Agreement among non-authoritative sources does not manufacture authority. This is the general authority non-amplification rule; "authority laundering" names the failure mode in which another property such as influence, reputation, role, repetition, or unrelated authority is incorrectly substituted for the authority required by the effect.
+
 ### TSMM-AAC-05 — approval is additional authority evidence, not actor intent
 
 Where policy requires approval, the approval MUST bind to the exact effect candidate and MUST be valid at the relevant transition. An approval reference does not replace the underlying authority chain.
@@ -75,6 +79,8 @@ The decision SHOULD retain enough provenance, policy version, time, authority/st
 ### TSMM-AAC-08 — layer separation
 
 Authority verification remains semantically distinct from runtime attempt admission, negotiation/business selection, settlement and reputation. Those layers may consume the decision but do not enlarge its authority.
+
+See [Decision Resolution Semantics](decision-resolution-semantics.md) for decision-basis separation and explicit-resolution invariants.
 
 ## Minimal semantic record
 
