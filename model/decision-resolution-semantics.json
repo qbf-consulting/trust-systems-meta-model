@@ -1,0 +1,34 @@
+{
+  "$schema": "../schemas/decision-resolution-semantics.schema.json",
+  "modelId": "urn:tsmm:model:decision-resolution-semantics",
+  "version": "0.26.0",
+  "invariants": [
+    {
+      "id": "TSMM-DR-01",
+      "name": "authority-non-amplification",
+      "statement": "Communication, repetition, endorsement, routing, aggregation, projection, republication, or transformation must not increase authority.",
+      "failurePattern": "authority-laundering"
+    },
+    {
+      "id": "TSMM-DR-02",
+      "name": "decision-basis-separation",
+      "statement": "A changed trust decision must not by itself imply that authority changed.",
+      "basisCategories": ["authority_change", "evidence_change", "policy_change", "lifecycle_change", "correction", "evaluation_context_change"]
+    },
+    {
+      "id": "TSMM-DR-03",
+      "name": "explicit-resolution",
+      "statement": "A material unresolved condition remains unresolved until an admissible material basis change is established.",
+      "admissibleResolutionCategories": ["authority_change", "evidence_change", "policy_change", "lifecycle_change", "correction"]
+    }
+  ],
+  "provenance": {
+    "relationship": "research-informed",
+    "normativeDependency": false,
+    "sources": [
+      "https://github.com/JessHines360/protocol-of-care-for-agents",
+      "https://github.com/JessHines360/protocol-of-care-for-agents/blob/main/BRIEF.md",
+      "https://github.com/JessHines360/protocol-of-care-for-agents/blob/main/experiments/SIMULATION_01_RUNBOOK.md"
+    ]
+  }
+}
