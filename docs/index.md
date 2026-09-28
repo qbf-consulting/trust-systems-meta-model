@@ -1,7 +1,7 @@
 ---
 owner: maintainers
-last_reviewed: 2026-05-05
-applicable_version: 0.24.0
+last_reviewed: 2026-09-28
+applicable_version: 0.26.0
 tier: 0
 title: Documentation
 permalink: /documentation/
@@ -24,6 +24,7 @@ TSMM is a portable reference model for designing, comparing, implementing, and a
 | --- | --- | --- |
 | Understand the model | [Core model](core-model.md), [Entity model](model/tsmm-entities.md), [Relationship model](model/tsmm-relationships.md) | `schemas/tsmm.schema.json` |
 | Model a system | [Model, Bind, Validate, Compare](getting-started/model-bind-validate-compare.md), [TSMM Graph Model](model/tsmm-graph-model.md) | `model/graph/tsmm.graph.json` |
+| Trace decision resolution | [Decision Resolution Semantics](decision-resolution-semantics.md) | `model/decision-resolution-semantics.json`, `schemas/decision-resolution-semantics.schema.json` |
 | Govern runtime effects | [Runtime Governance Envelope](model/runtime-governance-envelope.md), [Decision Receipt](model/decision-receipt.md) | `schemas/tsmm-runtime-governance.schema.json`, `schemas/tsmm-decision-receipt.schema.json` |
 | Govern agent discovery | [Discovery Governance](model/discovery-governance.md), [Agent Discovery Pattern](patterns/agent-discovery-pattern.md) | `schemas/tsmm-discovery-governance.schema.json` |
 | Negotiate capabilities | [Capability Negotiation](model/capability-negotiation.md), [Capability Negotiation Pattern](patterns/capability-negotiation-pattern.md) | `schemas/tsmm-capability-negotiation.schema.json` |
