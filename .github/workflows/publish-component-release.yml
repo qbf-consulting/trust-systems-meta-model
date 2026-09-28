@@ -5,7 +5,7 @@ on:
     branches: [main]
     paths:
       - 'VERSION'
-      - 'releases/v0.25.0.md'
+      - 'releases/v0.26.0.md'
       - '.github/workflows/publish-component-release.yml'
   workflow_dispatch:
 
@@ -13,14 +13,14 @@ permissions:
   contents: write
 
 concurrency:
-  group: publish-tsmm-v0.25.0
+  group: publish-tsmm-v0.26.0
   cancel-in-progress: false
 
 env:
-  VERSION: '0.25.0'
-  TAG: 'v0.25.0'
-  RELEASE_TITLE: 'TSMM v0.25.0 — Action-Specific Authority and Lifecycle-Safe Governance'
-  RELEASE_NOTES: 'releases/v0.25.0.md'
+  VERSION: '0.26.0'
+  TAG: 'v0.26.0'
+  RELEASE_TITLE: 'TSMM v0.26.0 — Decision Resolution Semantics'
+  RELEASE_NOTES: 'releases/v0.26.0.md'
 
 jobs:
   publish:
