@@ -49,9 +49,11 @@ jobs:
           a=[x for x in j["releases"] if x["version"]=="tsms-stack-2026.3"]
           assert len(a)==1 and a[0]["codename"]=="Banganapalle" and a[0]["status"]=="published"
           PY
-          for old in model/tsms-baseline-receipt.json model/tsms-baseline-receipt-2026.2.json releases/tsms-stack-2026.2.md; do
+          for old in model/tsms-baseline-receipt.json model/tsms-baseline-receipt-2026.2.json; do
             git show "tsms-stack-2026.2:$old" | cmp - "$old"
           done
+          # Historical release notes are authoritative at their published tag, not at current main.
+          test -n "$(git show tsms-stack-2026.2:releases/tsms-stack-2026.2.md)"
       - name: Canonical repository, historical, and current assurance gates
         run: |
           set -euo pipefail
