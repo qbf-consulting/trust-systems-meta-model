@@ -1,77 +1,24 @@
-name: TSMS Release Gate
+name: TSMS 2026.2 Historical Release Gate
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - '.github/workflows/tsms-release-gate.yml'
-      - 'model/tsms-stack.json'
-      - 'model/tsms-baseline-lineage.json'
-      - 'model/tsms-baseline-receipt-2026.2.json'
-      - 'model/tsms-wire-001.json'
-      - 'model/tsms-authority-at-commitment-001.json'
-      - 'model/tsms-collective-authority-001.json'
-      - 'scripts/tsms_receipts.py'
-      - 'scripts/run_tsms_wire.py'
-      - 'scripts/test_tsms_wire.py'
-      - 'scripts/run_tsms_e2e.py'
-      - 'scripts/test_tsms_e2e.py'
-      - 'scripts/run_tsms_2026_2_assurance.py'
-      - 'scripts/build_tsms_release_candidate.py'
-  pull_request:
-    branches: [main]
-    paths:
-      - '.github/workflows/tsms-release-gate.yml'
-      - 'model/tsms-stack.json'
-      - 'model/tsms-baseline-lineage.json'
-      - 'model/tsms-baseline-receipt-2026.2.json'
-      - 'model/tsms-authority-at-commitment-001.json'
-      - 'model/tsms-collective-authority-001.json'
-      - 'scripts/tsms_receipts.py'
-      - 'scripts/run_tsms_2026_2_assurance.py'
-      - 'scripts/build_tsms_release_candidate.py'
   workflow_dispatch:
 
 permissions:
   contents: read
 
 jobs:
-  release-gate:
+  verify:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-python@v7
         with:
           python-version: '3.12'
-      - name: Validate baseline receipt and lineage
+      - name: Historical evidence regression
         run: |
-          python3 scripts/validate_tsms_baseline.py
-          python3 scripts/validate_tsms_baseline_lineage.py
-          python3 scripts/test_tsms_baseline_lineage.py
-      - name: Retain original delegated-authority wire assurance
-        run: |
-          python3 scripts/test_tsms_wire.py
-          python3 scripts/run_tsms_wire.py
-      - name: Canonical E2E conformance
-        run: |
-          python3 scripts/run_tsms_e2e.py
-          python3 scripts/test_tsms_e2e.py
-      - name: Successor authority-at-commitment and lifecycle assurance
-        run: python3 scripts/run_tsms_2026_2_assurance.py
-      - name: Drift pressure tests
-        run: python3 scripts/test_tsms_drift.py
-      - name: Build machine-readable release candidate manifest
-        run: python3 scripts/build_tsms_release_candidate.py
-      - name: Upload TSMS 2026.2 release-gate evidence
-        uses: actions/upload-artifact@v7
-        with:
-          name: tsms-stack-2026.2-alphonso-mango-evidence
-          path: |
-            artifacts/e2e/TSMS-WIRE-001/
-            artifacts/e2e/TSMS-E2E-001/
-            artifacts/e2e/TSMS-2026.2/
-            artifacts/validation/tsms-baseline.json
-            artifacts/validation/tsms-baseline-lineage-tests.json
-            artifacts/validation/tsms-drift-tests.json
-            artifacts/release/tsms-stack-2026.2.json
-          if-no-files-found: error
+          python scripts/validate_tsms_baseline_lineage.py
+          python scripts/test_tsms_wire.py
+          python scripts/run_tsms_wire.py
+          python scripts/run_tsms_e2e.py
+          python scripts/test_tsms_e2e.py
+          python scripts/run_tsms_2026_2_assurance.py

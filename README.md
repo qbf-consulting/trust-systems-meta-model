@@ -25,6 +25,7 @@ TSMM is a portable semantic reference model for designing, comparing, implementi
 - [Bindings](docs/bindings/index.md)
 - [Crosswalks](docs/crosswalks/index.md)
 - [Trust Systems Modelling Stack](docs/tsms.md)
+- [TSMS Stack 2026.3 — Banganapalle](releases/tsms-stack-2026.3.md) — owner-accepted, pinned TSMM/TIS/TGA decision-resolution baseline
 - [TSMS adopter guide](docs/tsms-adopter-guide.md)
 - [Stewardship](docs/stewardship.md)
 - [Citation metadata](CITATION.cff)

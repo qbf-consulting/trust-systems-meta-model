@@ -35,15 +35,17 @@ TSMM coordinates TSMS but does not acquire authority over TIS or TGA. If adoptio
 
 ## Start with the released stack baseline
 
-The current TSMS stack release candidate is `tsms-stack-2026.2` — **Alphonso mango**. The active receipt is resolved through `model/tsms-baseline-lineage.json` and stored in `model/tsms-baseline-receipt-2026.2.json`. The 2026.1 receipt remains immutable historical evidence:
+The accepted TSMS stack release is `tsms-stack-2026.3` — **Banganapalle**. The active receipt is resolved through `model/tsms-baseline-lineage.json` and stored in `model/tsms-baseline-receipt-2026.3.json`. Both 2026.1 and 2026.2 receipts remain immutable historical evidence:
 
 | Layer | Version | Accepted commit |
 | --- | --- | --- |
-| TSMM | `v0.25.0` | `a673971d7a3e10cff5ceb679738de4ce5bce6857` |
-| TIS | `v0.15.0` | `e4fbe60e6810f108b593c76ac2b970093a59a5e1` |
-| TGA | `v0.13.0` | `457fc18a4be90f439d64f96c5a4d6c8cce237404` |
+| TSMM | `v0.26.0` | `17d9e786bcd1e1e9b5c8332cbe16a256769eacd6` |
+| TIS | `v0.16.0` | `46bd4cee94cbc9fdd5898211165c968196bcdcc4` |
+| TGA | `v0.14.0` | `69692732f61a9f0426ed4a901a4f2702be139593` |
 
 Do not substitute later branch heads and assume equivalent compatibility. TSMS compatibility is evidence-backed and commit-specific. Same-version changes, declaration drift, or unavailable authoritative state can withdraw inherited compatibility.
+
+The 2026.3 added capability is the [decision-resolution consumer](tsms-successor-qualification.md). Reproduce it with `python3 scripts/qualify_tsms_decision_resolution.py`; the legacy transaction below is deliberately retained at the **2026.2** pins and does not itself exercise the new decision-resolution contract.
 
 ## Fastest path to a first successful result
 
@@ -63,7 +65,7 @@ A successful live wire execution reports:
 TSMS-WIRE-001: PASS / PERMIT
 ```
 
-The live runner dereferences the exact accepted TSMM, TIS and TGA commits. It does not silently replace unavailable upstream state with local copies.
+The historical runner dereferences the exact **2026.2** TSMM, TIS and TGA commits. It does not silently replace unavailable upstream state with local copies.
 
 ## Understand `TSMS-WIRE-001`
 
@@ -105,16 +107,18 @@ A TSMS result is useful because the judgment can be inspected. The main evidence
 | Evidence | Purpose |
 | --- | --- |
 | `model/tsms-baseline-receipt.json` | immutable 2026.1 predecessor receipt |
-| `model/tsms-baseline-receipt-2026.2.json` | active accepted component versions, commits and validation evidence |
+| `model/tsms-baseline-receipt-2026.2.json` | immutable predecessor and historical wire/E2E pins |
+| `model/tsms-baseline-receipt-2026.3.json` | accepted decision-resolution stack component pins |
 | `artifacts/e2e/TSMS-WIRE-001/wire-transaction-receipt.json` | live cross-repository transaction result and declaration digests |
 | `artifacts/e2e/TSMS-WIRE-001/pressure-tests.json` | positive and negative wire cases |
 | `artifacts/e2e/TSMS-E2E-001/evidence-bundle.json` | canonical end-to-end conformance evidence |
 | `artifacts/validation/tsms-drift-tests.json` | drift classification pressure tests |
 | `artifacts/e2e/TSMS-RENEWAL-001/transaction-evidence.json` | compatibility withdrawal and restoration experiment |
 | `artifacts/e2e/TSMS-2026.2/assurance-evidence.json` | exact-action authority and collective-authority lifecycle evidence |
-| `artifacts/release/tsms-stack-2026.2.json` | release-candidate evidence manifest |
+| `artifacts/e2e/TSMS-2026.3/decision-resolution-qualification.json` | pinned current decision-resolution evidence |
+| `artifacts/release/tsms-stack-2026.3.json` | current release-gate evidence manifest |
 
-For a release run, the `TSMS Release Gate` workflow packages these artifacts into one retained workflow artifact.
+For current publication, `TSMS Publish Stack 2026.3` validates the cross-layer consumer and retains current plus historical regression evidence. The older `TSMS 2026.2 Historical Release Gate` is archival verification only.
 
 ## Interpret dispositions correctly
 
@@ -224,7 +228,7 @@ Your binding should point to the TSMM concepts, TIS contracts and TGA compositio
 
 ## Release and assurance posture
 
-The TSMS release gate tests the claim that the released stack can execute the canonical cross-repository wire transaction, reject defined invalid cases, detect drift, and restore compatibility only through fresh evidence and acceptance. Green CI is necessary but not sufficient: the publication decision remains an explicit human governance event.
+The current TSMS release gate verifies decision-resolution integration at exact component commits and preserves separate historical evidence for the 2026.2 delegated-authority wire and lifecycle contracts. It rejects missing, unsupported, stale or contradictory decision-resolution evidence instead of converting these conditions into successful authorization. Green CI is necessary but not sufficient: the publication decision remains an explicit human governance event.
 
 For the architecture and machine-readable stack surfaces, continue with [Trust Systems Modelling Stack (TSMS)](tsms.md). For TSMM-only adoption, return to [Adoption](adoption.md).
 

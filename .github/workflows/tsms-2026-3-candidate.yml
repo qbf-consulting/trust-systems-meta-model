@@ -1,51 +1,22 @@
-name: TSMS 2026.3 Candidate Qualification
+name: TSMS 2026.3 Pre-Acceptance Candidate Archive
 
 on:
-  pull_request:
-    branches: [main]
-    paths:
-      - 'model/tsms-baseline-receipt-2026.3.candidate.json'
-      - 'scripts/qualify_tsms_decision_resolution.py'
-      - 'scripts/build_tsms_2026_3_candidate.py'
-      - 'scripts/test_tsms_2026_3_candidate.py'
-      - '.github/workflows/tsms-2026-3-candidate.yml'
-      - 'config/release-codename-history.json'
-  push:
-    branches: [main]
-    paths:
-      - 'model/tsms-baseline-receipt-2026.3.candidate.json'
-      - 'scripts/build_tsms_2026_3_candidate.py'
-      - '.github/workflows/tsms-2026-3-candidate.yml'
   workflow_dispatch:
 
 permissions:
   contents: read
 
 jobs:
-  candidate:
+  archive:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
-      - uses: actions/setup-python@v7
-        with:
-          python-version: '3.12'
-      - run: python -m pip install -r requirements-dev.txt
-      - name: Validate current accepted baseline and immutable lineage
+      - name: Verify archived candidate remains explicitly unaccepted
         run: |
-          python scripts/validate_tsms_baseline.py
-          python scripts/validate_tsms_baseline_lineage.py
-          python scripts/test_tsms_baseline_lineage.py
-      - name: Qualify pinned real consumer path
-        run: python scripts/qualify_tsms_decision_resolution.py
-      - name: Falsify candidate acceptance and compatibility conditions
-        run: python scripts/test_tsms_2026_3_candidate.py
-      - name: Build candidate-only release evidence
-        run: python scripts/build_tsms_2026_3_candidate.py
-      - name: Upload bounded evidence
-        uses: actions/upload-artifact@v7
-        with:
-          name: tsms-2026-3-candidate-evidence
-          path: |
-            artifacts/e2e/TSMS-2026.3/decision-resolution-qualification.json
-            artifacts/release/tsms-stack-2026.3.candidate.json
-          if-no-files-found: error
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          x=json.loads(Path('model/tsms-baseline-receipt-2026.3.candidate.json').read_text())
+          assert x['humanAcceptance']['accepted'] is False
+          assert x['status']=='candidate-pending-human-acceptance'
+          PY

@@ -1,0 +1,134 @@
+name: TSMS Publish Stack 2026.3
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/tsms-2026-3-publish.yml'
+      - 'model/tsms-baseline-receipt-2026.3.json'
+      - 'model/tsms-baseline-lineage.json'
+      - 'model/tsms-stack.json'
+      - 'releases/tsms-stack-2026.3.md'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  issues: write
+
+concurrency:
+  group: tsms-stack-2026-3-publication
+  cancel-in-progress: false
+
+env:
+  TAG: tsms-stack-2026.3
+  RELEASE_TITLE: TSMS Stack 2026.3 — Banganapalle
+  RELEASE_NOTES: releases/tsms-stack-2026.3.md
+  ISSUE: '70'
+
+jobs:
+  publish:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - name: Install repository validation dependencies
+        run: python -m pip install -r requirements-dev.txt
+      - name: Verify immutable prior receipts and persisted release identity
+        run: |
+          set -euo pipefail
+          python scripts/release_codenames.py validate
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          j=json.loads(Path("config/release-codename-history.json").read_text())
+          a=[x for x in j["releases"] if x["version"]=="tsms-stack-2026.3"]
+          assert len(a)==1 and a[0]["codename"]=="Banganapalle" and a[0]["status"]=="published"
+          PY
+          for old in model/tsms-baseline-receipt.json model/tsms-baseline-receipt-2026.2.json releases/tsms-stack-2026.2.md; do
+            git show "tsms-stack-2026.2:$old" | cmp - "$old"
+          done
+      - name: Canonical repository, historical, and current assurance gates
+        run: |
+          set -euo pipefail
+          make validate
+          python scripts/validate_tsms_baseline_lineage.py
+          python scripts/test_tsms_baseline_lineage.py
+          python scripts/test_tsms_wire.py
+          python scripts/run_tsms_wire.py
+          python scripts/run_tsms_e2e.py
+          python scripts/test_tsms_e2e.py
+          python scripts/run_tsms_2026_2_assurance.py
+          python scripts/test_tsms_drift.py
+          python scripts/qualify_tsms_decision_resolution.py
+          python scripts/build_tsms_2026_3_release.py
+          python scripts/test_tsms_2026_3_release.py
+          test -s "$RELEASE_NOTES"
+          test -s docs/tsms-assurance.md
+          test -s docs/tsms-adopter-guide.md
+      - name: Verify authenticated owner acceptance before publication
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          gh api --paginate "repos/${GITHUB_REPOSITORY}/issues/${ISSUE}/comments" \
+            --jq '.[] | select(.user.login == "sankarshanmukhopadhyay") | .body' \
+            | grep -Fqx '**Human release decision: ACCEPTED FOR PUBLICATION.**'
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          j=json.loads(Path('artifacts/release/tsms-stack-2026.3.json').read_text())
+          assert j['status']=='qualified-for-owner-authorized-publication' and not j['errors']
+          PY
+      - name: Retain release-gate evidence
+        uses: actions/upload-artifact@v7
+        with:
+          name: tsms-stack-2026-3-banganapalle-release-evidence
+          path: |
+            artifacts/release/tsms-stack-2026.3.json
+            artifacts/e2e/TSMS-2026.3/
+            artifacts/e2e/TSMS-WIRE-001/
+            artifacts/e2e/TSMS-E2E-001/
+            artifacts/e2e/TSMS-2026.2/
+            artifacts/validation/tsms-baseline.json
+            artifacts/validation/tsms-baseline-lineage-tests.json
+            artifacts/validation/tsms-drift-tests.json
+          if-no-files-found: error
+      - name: Publish immutable target as Latest
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            test "$(gh api "repos/$GITHUB_REPOSITORY/git/ref/tags/$TAG" --jq '.object.sha')" = "$GITHUB_SHA" || { echo "Refusing to overwrite a different publication commit" >&2; exit 1; }
+            test "$(gh release view "$TAG" --json isDraft --jq '.isDraft')" = false
+            test "$(gh release view "$TAG" --json isPrerelease --jq '.isPrerelease')" = false
+            gh release edit "$TAG" --latest
+          else
+            gh release create "$TAG" --target "$GITHUB_SHA" --title "$RELEASE_TITLE" --notes-file "$RELEASE_NOTES" --latest
+          fi
+          test "$(gh api "repos/$GITHUB_REPOSITORY/releases/latest" --jq '.tag_name')" = "$TAG"
+          test "$(gh api "repos/$GITHUB_REPOSITORY/git/ref/tags/$TAG" --jq '.object.sha')" = "$GITHUB_SHA"
+          test "$(gh release view "$TAG" --json isDraft --jq '.isDraft')" = false
+          test "$(gh release view "$TAG" --json isPrerelease --jq '.isPrerelease')" = false
+      - name: Reconcile issue after verified publication
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          url="$(gh release view "$TAG" --json url --jq '.url')"
+          body="$(printf '%s\n' \
+            '## TSMS 2026.3 — Banganapalle published' \
+            "" \
+            "- Release: $url" \
+            "- Tag commit: $GITHUB_SHA" \
+            '- Active receipt: urn:tsms:baseline:2026-11-13' \
+            '- Components: TSMM v0.26.0 / TIS v0.16.0 / TGA v0.14.0' \
+            "- Main release gate: https://github.com/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID" \
+            '- Accepted predecessor receipts remain immutable; external certification is not claimed.')"
+          gh api "repos/$GITHUB_REPOSITORY/issues/$ISSUE/comments" -f body="$body" >/dev/null
+          gh api -X PATCH "repos/$GITHUB_REPOSITORY/issues/$ISSUE" -f state=closed -f state_reason=completed >/dev/null

@@ -3,10 +3,10 @@
   "stackId": "urn:tsms:stack:trust-systems-modelling",
   "name": "Trust Systems Modelling Stack",
   "abbreviation": "TSMS",
-  "status": "candidate-with-renewed-validated-baseline",
+  "status": "validated-successor-baseline",
   "coordination": {
     "repository": "qbf-consulting/trust-systems-meta-model",
-    "issue": "https://github.com/qbf-consulting/trust-systems-meta-model/issues/52",
+    "issue": "https://github.com/qbf-consulting/trust-systems-meta-model/issues/70",
     "authority": "coordination-only",
     "note": "Coordination does not transfer semantic, contract, or implementation authority between repositories."
   },
@@ -16,7 +16,7 @@
       {
         "id": "tsmm",
         "repository": "qbf-consulting/trust-systems-meta-model",
-        "version": "v0.25.0",
+        "version": "v0.26.0",
         "role": "canonical-semantic-model",
         "authority": [
           "canonical-concepts",
@@ -34,7 +34,7 @@
       {
         "id": "tis",
         "repository": "qbf-consulting/trust-infrastructure-schemas",
-        "version": "v0.15.0",
+        "version": "v0.16.0",
         "role": "portable-machine-readable-contract-layer",
         "authority": [
           "portable-core-contracts",
@@ -52,7 +52,7 @@
       {
         "id": "tga",
         "repository": "sankarshanmukhopadhyay/trust-graph-artifacts",
-        "version": "v0.13.0",
+        "version": "v0.14.0",
         "role": "executable-governance-and-implementation-layer",
         "authority": [
           "governance-pattern-packages",
@@ -83,7 +83,7 @@
   ],
   "unknownCompatibilityPolicy": "fail-closed-or-explicitly-report-unsupported; never silently treat unknown compatibility as compatible",
   "validatedBaseline": {
-    "receipt": "model/tsms-baseline-receipt-2026.2.json",
+    "receipt": "model/tsms-baseline-receipt-2026.3.json",
     "status": "validated-successor-baseline",
     "scope": "pinned-reviewed-commits",
     "continuousRemoteDriftMonitoring": false

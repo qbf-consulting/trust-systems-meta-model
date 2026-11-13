@@ -8,6 +8,8 @@ sha_re=re.compile(r'^[0-9a-f]{40}$')
 def validate(receipt):
     errors=[]
     components={x.get('id'):x for x in receipt.get('components',[])}
+    if len(receipt.get('components',[]))!=3 or set(components)!={'tsmm','tis','tga'}: errors.append('receipt must contain exactly three unique component roles')
+    if receipt.get('receiptId')=='urn:tsms:baseline:2026-11-13' and receipt.get('humanAcceptance',{}).get('evidence')!='https://github.com/qbf-consulting/trust-systems-meta-model/issues/70#issuecomment-6843558406': errors.append('successor acceptance evidence missing')
     for cid in ('tsmm','tis','tga'):
         if cid not in components:
             errors.append(f'missing component {cid}'); continue

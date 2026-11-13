@@ -33,6 +33,8 @@ def validate(lineage, root=ROOT):
         if not full.exists(): errors.append(f'{rid}: receipt file missing'); continue
         receipt=load(full)
         if receipt.get('receiptId')!=rid: errors.append(f'{rid}: receipt file ID mismatch')
+        if receipt.get('predecessor') is not None and receipt.get('predecessor') != predecessor: errors.append(f'{rid}: receipt predecessor disagrees with lineage')
+        if e.get('status')=='active' and receipt.get('status') not in ('validated-successor-baseline','validated-repository-baseline'): errors.append(f'{rid}: active receipt has invalid status')
         for c in receipt.get('components',[]):
             if not SHA_RE.fullmatch(str(c.get('commit',''))): errors.append(f'{rid}: {c.get("id")} commit is not pinned')
             runs=c.get('validationRuns',[])

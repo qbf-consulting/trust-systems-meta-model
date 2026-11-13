@@ -21,8 +21,8 @@ ok &= run('accepted-baseline',suite,receipt,lineage,'PASS')
 bad=copy.deepcopy(receipt); bad['components']=bad['components'][:-1]
 ok &= run('missing-stack-layer',suite,bad,lineage,'FAIL')
 
-bad_lineage=copy.deepcopy(lineage); bad_lineage['activeReceipt']='urn:tsms:baseline:unknown'
-ok &= run('active-receipt-mismatch',suite,receipt,bad_lineage,'FAIL')
+bad_lineage=copy.deepcopy(lineage); bad_lineage['receipts']=[x for x in bad_lineage['receipts'] if x['receiptId']!=receipt['receiptId']]
+ok &= run('missing-historical-receipt',suite,receipt,bad_lineage,'FAIL')
 
 bad_suite=copy.deepcopy(suite); bad_suite['portableContractAuthority']['requiredContracts']=[]
 ok &= run('missing-portable-contracts',bad_suite,receipt,lineage,'FAIL')

@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
 import datetime, json, pathlib, sys, urllib.request
-from tsms_receipts import load_active_receipt
 
 ROOT=pathlib.Path(__file__).resolve().parents[1]
 COMMIT_CASE=json.loads((ROOT/'model/tsms-authority-at-commitment-001.json').read_text())
 COLLECTIVE_CASE=json.loads((ROOT/'model/tsms-collective-authority-001.json').read_text())
-RECEIPT=load_active_receipt(ROOT)
+RECEIPT=json.loads((ROOT/'model/tsms-baseline-receipt-2026.2.json').read_text())
 
 def fetch(repo,commit,path):
     req=urllib.request.Request(

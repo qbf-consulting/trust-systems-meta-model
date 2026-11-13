@@ -17,7 +17,7 @@ TSMS is the coordinated modelling and executable-governance stack formed by thre
 
 The stack makes the path from **meaning → portable representation → executable instantiation → evidence** explicit and testable.
 
-For hands-on adoption, start with the [TSMS Adopter Guide](tsms-adopter-guide.md). For the current evidence-backed state, see [TSMS Assurance Status](tsms-assurance.md). Release details are in [TSMS Stack 2026.2 — Alphonso mango](../releases/tsms-stack-2026.2.md). The original 2026.1 receipt remains immutable historical evidence.
+For hands-on adoption, start with the [TSMS Adopter Guide](tsms-adopter-guide.md). For the current evidence-backed state, see [TSMS Assurance Status](tsms-assurance.md). Release details are in [TSMS Stack 2026.3 — Banganapalle](../releases/tsms-stack-2026.3.md). The original 2026.1 receipt remains immutable historical evidence.
 
 ## Authority rule
 
@@ -42,25 +42,25 @@ validation / evidence / assurance consumers
 
 Feedback may flow upward through issues and proposals, but implementation need does not itself create semantic or schema authority.
 
-## Successor under qualification
+## Accepted 2026.3 decision-resolution baseline
 
-[TSMS 2026.3 candidate — Banganapalle](../releases/tsms-stack-2026.3.md) is a **non-accepted** evidence-backed proposal with TSMM v0.26.0, TIS v0.16.0 and TGA v0.14.0 component pins. This does not alter the active 2026.2 receipt. The decision-resolution consumer qualification and release decision are governed separately by [#70](https://github.com/qbf-consulting/trust-systems-meta-model/issues/70).
+[TSMS 2026.3 — Banganapalle](../releases/tsms-stack-2026.3.md) is the explicitly owner-accepted successor, coordinated at exact component commits. Its live consumer path resolves TSMM v0.26.0 invariants through the TIS v0.16.0 portable schema into TGA v0.14.0 executable resolution behavior. The previously accepted 2026.2 wire and authority-at-commitment assurance remains historical, not silently promoted to these newer component versions.
 
 ## Accepted compatibility baseline
 
-The active validated TSMS baseline is resolved through `model/tsms-baseline-lineage.json` and pinned in `model/tsms-baseline-receipt-2026.2.json`:
+The active validated TSMS baseline is resolved through `model/tsms-baseline-lineage.json` and pinned in `model/tsms-baseline-receipt-2026.3.json`:
 
 | Layer | Version | Accepted commit |
 | --- | --- | --- |
-| TSMM | `v0.25.0` | `a673971d7a3e10cff5ceb679738de4ce5bce6857` |
-| TIS | `v0.15.0` | `e4fbe60e6810f108b593c76ac2b970093a59a5e1` |
-| TGA | `v0.13.0` | `457fc18a4be90f439d64f96c5a4d6c8cce237404` |
+| TSMM | `v0.26.0` | `17d9e786bcd1e1e9b5c8332cbe16a256769eacd6` |
+| TIS | `v0.16.0` | `46bd4cee94cbc9fdd5898211165c968196bcdcc4` |
+| TGA | `v0.14.0` | `69692732f61a9f0426ed4a901a4f2702be139593` |
 
-The predecessor `urn:tsms:baseline:2026-08-29` remains immutable and superseded, not rewritten. Compatibility remains commit-specific; later branch state does not inherit acceptance automatically.
+Both predecessor receipts (`urn:tsms:baseline:2026-08-29` and `urn:tsms:baseline:2026-09-23`) remain immutable and superseded, not rewritten. Compatibility remains commit-specific; later branch state does not inherit acceptance automatically.
 
 ## Executable wire flow
 
-The canonical released-stack transaction is `TSMS-WIRE-001 — Delegated Authority Decision`.
+The historically retained 2026.2 transaction is `TSMS-WIRE-001 — Delegated Authority Decision`; it is run against its original pinned receipt, independently of the new active receipt.
 
 ```text
 transaction input
@@ -126,21 +126,23 @@ Historical receipts remain immutable evidence. A controlled non-production renew
 
 ## Release gate
 
-The current stack release is `tsms-stack-2026.2`, codename **Alphonso mango**. It succeeds `tsms-stack-2026.1 — Cashew-Nut` without altering its historical receipt or evidence.
+The current accepted release is `tsms-stack-2026.3`, codename **Banganapalle**. It succeeds 2026.2 and 2026.1 without modifying their historical receipts, tags or evidence.
 
-The `TSMS Release Gate` workflow establishes release candidacy only after all of the following succeed:
+The historical `TSMS 2026.2 Historical Release Gate` remains for retrospective evidence checks. The dedicated 2026.3 publication workflow requires all of the following:
 
 1. deterministic wire pressure tests;
 2. live pinned cross-repository `TSMS-WIRE-001` execution;
 3. canonical E2E conformance;
 4. drift pressure tests;
 5. controlled renewal transaction; and
-6. generation of a machine-readable release-candidate manifest.
+6. cross-layer decision-resolution schema and executable consumer qualification at exact successor pins;
+7. validation of the accepted successor receipt, lineage and owner acceptance;
+8. publication evidence generation and tag/Latest verification.
 
 The release evidence manifest is generated at:
 
 ```text
-artifacts/release/tsms-stack-2026.2.json
+artifacts/release/tsms-stack-2026.3.json
 ```
 
 Green CI is necessary but not sufficient. Publication requires a separate explicit human release decision, recorded in the governing release issue.
@@ -173,7 +175,8 @@ Consume the model and artifact evidence from TSMS in an assurance or interoperab
 | --- | --- |
 | `model/tsms-stack.json` | stack identity, roles, authority and conformance rules |
 | `model/tsms-baseline-receipt.json` | immutable 2026.1 historical component state |
-| `model/tsms-baseline-receipt-2026.2.json` | active immutable successor component state |
+| `model/tsms-baseline-receipt-2026.2.json` | immutable 2026.2 predecessor component state |
+| `model/tsms-baseline-receipt-2026.3.json` | active accepted decision-resolution successor state |
 | `model/tsms-baseline-lineage.json` | receipt lineage and active-state relationship |
 | `model/tsms-wire-001.json` | canonical wire transaction contract |
 | `artifacts/e2e/TSMS-WIRE-001/` | wire transaction and pressure-test evidence |
@@ -184,6 +187,6 @@ Consume the model and artifact evidence from TSMS in an assurance or interoperab
 
 ## Programme governance
 
-The current renewal/release programme is [TSMM #52 — TSMS Stack 2026.2](https://github.com/qbf-consulting/trust-systems-meta-model/issues/52).
+The current renewal/release programme is [TSMM #70 — TSMS Stack 2026.3](https://github.com/qbf-consulting/trust-systems-meta-model/issues/70).
 
 Repository authority remains distributed. TSMM coordinates stack evidence; it does not acquire TIS or TGA authority.

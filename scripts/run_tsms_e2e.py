@@ -1,10 +1,9 @@
 #!/usr/bin/env python3
 import json, pathlib, sys
-from tsms_receipts import active_receipt_path
 
 ROOT=pathlib.Path(__file__).resolve().parents[1]
 SUITE=ROOT/'model/tsms-e2e-suite.json'
-RECEIPT=active_receipt_path(ROOT)
+RECEIPT=ROOT/'model/tsms-baseline-receipt-2026.2.json'
 LINEAGE=ROOT/'model/tsms-baseline-lineage.json'
 OUT=ROOT/'artifacts/e2e/TSMS-E2E-001/evidence-bundle.json'
 
@@ -20,7 +19,7 @@ def evaluate(suite,receipt,lineage):
     components={c.get('id'):c for c in receipt.get('components',[])}
     expected={'tsmm','tis','tga'}
     if set(components)!=expected: errors.append('baseline must contain exactly tsmm, tis and tga')
-    if lineage.get('activeReceipt')!=receipt.get('receiptId'): errors.append('active lineage receipt does not match baseline receipt')
+    if not any(x.get('receiptId')==receipt.get('receiptId') and x.get('path')=='model/tsms-baseline-receipt-2026.2.json' and x.get('status') in ('active','superseded') for x in lineage.get('receipts',[])): errors.append('historical 2026.2 lineage receipt missing or incompatible')
     if components and any(len(str(c.get('commit','')))!=40 for c in components.values()): errors.append('all component states must be pinned commits')
 
     semantic=suite.get('semanticAuthority',{}).get('requiredConceptIds',[])
@@ -47,7 +46,7 @@ def evaluate(suite,receipt,lineage):
         'semanticLayer':'PASS' if semantic else 'FAIL',
         'portableContractLayer':'PASS' if contracts else 'FAIL',
         'executableGovernanceLayer':'PASS' if artifact else 'FAIL',
-        'baselineLineage':'PASS' if lineage.get('activeReceipt')==receipt.get('receiptId') else 'FAIL',
+        'baselineLineage':'PASS' if not any('historical 2026.2 lineage' in e for e in errors) else 'FAIL',
         'executionCases':'PASS' if cases and all(c['status']=='pass' for c in cases) else 'FAIL'
       },
       'executionCases':cases,
