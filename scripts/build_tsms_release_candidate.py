@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 import datetime, hashlib, json, pathlib, sys
-from tsms_receipts import active_receipt_path
 
 ROOT=pathlib.Path(__file__).resolve().parents[1]
 RELEASE_ID="tsms-stack-2026.2"
@@ -17,7 +16,7 @@ def main():
     e2e_path=pathlib.Path("artifacts/e2e/TSMS-E2E-001/evidence-bundle.json")
     successor_path=pathlib.Path("artifacts/e2e/TSMS-2026.2/assurance-evidence.json")
     drift_tests_path=pathlib.Path("artifacts/validation/tsms-drift-tests.json")
-    baseline_path=active_receipt_path(ROOT).relative_to(ROOT)
+    baseline_path=pathlib.Path('model/tsms-baseline-receipt-2026.2.json')
     lineage_path=pathlib.Path("model/tsms-baseline-lineage.json")
     required=[wire_path,wire_tests_path,e2e_path,successor_path,drift_tests_path,baseline_path,lineage_path]
     for path in required: require((ROOT/path).exists(),f"required release evidence missing: {path}")

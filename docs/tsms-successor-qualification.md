@@ -5,7 +5,7 @@ parent: Documentation
 ---
 # TSMS successor decision-resolution qualification
 
-Governing issue: [#70](https://github.com/qbf-consulting/trust-systems-meta-model/issues/70). The accepted stack remains **TSMS 2026.2** until independently evidenced and explicitly owner-accepted renewal. No prior receipt, tag or codename is modified by this assessment.
+Governing issue: [#70](https://github.com/qbf-consulting/trust-systems-meta-model/issues/70). The successor **TSMS 2026.3** was explicitly owner-accepted on 13 November 2026, with evidence in issue #70. The prior 2026.2 receipt remains immutable. No prior receipt, tag or codename is modified by this assessment.
 
 The candidate adds the independently published TSMM v0.26.0 decision-resolution invariants and TIS v0.16.0 portable evidence contract to the *executable* consumer path supplied by TGA [#29](https://github.com/sankarshanmukhopadhyay/trust-graph-artifacts/issues/29) / [PR #30](https://github.com/sankarshanmukhopadhyay/trust-graph-artifacts/pull/30). The local TGA golden path for earlier component versions is preserved without relabeling it.
 
@@ -15,4 +15,4 @@ Passing proves *limited, synthetic and pinned* decision-resolution interoperabil
 
 TSMM [#68](https://github.com/qbf-consulting/trust-systems-meta-model/issues/68) and TIS [#32](https://github.com/qbf-consulting/trust-infrastructure-schemas/issues/32) preserve the temporal research boundary. Effective time, authoritative recording cutoff, client observation, decision-time reliance and retrospective reconstruction remain distinct, and no unsupported temporal as-known-at assertion can inherit an affirmative decision from a generic portable schema.
 
-**Decision gate:** A candidate stack release requires a new exact-component-pinned immutable receipt, fresh component CI, successful successor cross-layer qualification, compatibility/drift checks, release notes and separately recorded explicit human acceptance after evidence review. The 2026.2 publication machinery must not be reused under its old release identifier.
+**Publication gate:** The accepted stack release requires the new exact-component-pinned immutable receipt, fresh component CI, successful successor cross-layer qualification, compatibility/drift checks, release notes, the recorded explicit human acceptance, and successful current release workflow verification. The 2026.2 publication machinery must not be reused under its old release identifier.

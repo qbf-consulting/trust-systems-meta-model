@@ -14,6 +14,7 @@ tier: 0
 
 Published component and coordinated Trust Systems Modelling Stack release notes.
 
+- [TSMS Stack 2026.3 — Banganapalle](tsms-stack-2026.3.md)
 - [TSMS Stack 2026.2 — Alphonso mango](tsms-stack-2026.2.md)
 - [TSMS Stack 2026.1 — Cashew-Nut](tsms-stack-2026.1.md)
 - [v0.26.0](v0.26.0.md)
