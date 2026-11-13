@@ -12,10 +12,12 @@ import urllib.request
 from jsonschema import Draft7Validator, FormatChecker
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
+TSMM_REPO = "qbf-consulting/trust-systems-meta-model"
+TSMM_COMMIT = "17d9e786bcd1e1e9b5c8332cbe16a256769eacd6"  # released v0.26.0
 TIS_REPO = "qbf-consulting/trust-infrastructure-schemas"
 TIS_COMMIT = "46bd4cee94cbc9fdd5898211165c968196bcdcc4"  # published v0.16.0
 TGA_REPO = "sankarshanmukhopadhyay/trust-graph-artifacts"
-TGA_COMMIT = "1d83c64a1d0208e6d7a85e844299841ad2283795"  # merged TGA #30
+TGA_COMMIT = "69692732f61a9f0426ed4a901a4f2702be139593"  # published TGA v0.14.0
 OUTPUT = ROOT / "artifacts/e2e/TSMS-2026.3/decision-resolution-qualification.json"
 
 
@@ -27,7 +29,9 @@ def fetch(repository, commit, path):
 
 
 def evaluate():
-    semantic = json.loads((ROOT / "model/decision-resolution-semantics.json").read_text())
+    semantic = json.loads(fetch(TSMM_REPO, TSMM_COMMIT, "model/decision-resolution-semantics.json"))
+    if semantic != json.loads((ROOT / "model/decision-resolution-semantics.json").read_text()):
+        raise ValueError("local semantic model differs from pinned published TSMM model")
     invariants = {x["id"]: x for x in semantic["invariants"]}
     if set(invariants) != {"TSMM-DR-01", "TSMM-DR-02", "TSMM-DR-03"}:
         raise ValueError("canonical TSMM decision-resolution invariants changed")
@@ -85,7 +89,7 @@ def evaluate():
     return {
         "profile": "tsms-2026.3-decision-resolution-candidate",
         "status": "fail" if failures else "pass",
-        "tsmm": {"version": semantic["version"], "invariants": sorted(invariants)},
+        "tsmm": {"repository": TSMM_REPO, "commit": TSMM_COMMIT, "version": semantic["version"], "invariants": sorted(invariants)},
         "tis": {"repository": TIS_REPO, "version": "v0.16.0", "commit": TIS_COMMIT,
                 "schema": "decision/decision-resolution-evidence.schema.json"},
         "tga": {"repository": TGA_REPO, "commit": TGA_COMMIT,

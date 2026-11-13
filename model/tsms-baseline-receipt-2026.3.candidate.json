@@ -1,0 +1,83 @@
+{
+  "receiptId": "urn:tsms:baseline:2026-11-13-candidate",
+  "stackId": "urn:tsms:stack:trust-systems-modelling",
+  "status": "candidate-pending-human-acceptance",
+  "issuedAt": "2026-11-13",
+  "governingIssue": "https://github.com/qbf-consulting/trust-systems-meta-model/issues/70",
+  "predecessor": "urn:tsms:baseline:2026-09-23",
+  "proposedRelease": "tsms-stack-2026.3",
+  "codename": "Banganapalle",
+  "components": [
+    {
+      "id": "tsmm",
+      "repository": "qbf-consulting/trust-systems-meta-model",
+      "version": "v0.26.0",
+      "commit": "17d9e786bcd1e1e9b5c8332cbe16a256769eacd6",
+      "releaseTag": "v0.26.0",
+      "role": "canonical-semantic-model",
+      "validationRuns": [
+        {
+          "name": "Validate TSMM Candidate",
+          "run": "https://github.com/qbf-consulting/trust-systems-meta-model/actions/runs/36369504525",
+          "conclusion": "success"
+        }
+      ],
+      "evidence": [
+        "model/decision-resolution-semantics.json",
+        "docs/decision-resolution-semantics.md"
+      ]
+    },
+    {
+      "id": "tis",
+      "repository": "qbf-consulting/trust-infrastructure-schemas",
+      "version": "v0.16.0",
+      "commit": "46bd4cee94cbc9fdd5898211165c968196bcdcc4",
+      "releaseTag": "v0.16.0",
+      "role": "portable-machine-readable-contract-layer",
+      "validationRuns": [
+        {
+          "name": "Validate TIS Candidate",
+          "run": "https://github.com/qbf-consulting/trust-infrastructure-schemas/actions/runs/36369747255",
+          "conclusion": "success"
+        }
+      ],
+      "evidence": [
+        "decision/decision-resolution-evidence.schema.json",
+        "docs/decision-resolution-evidence.md"
+      ]
+    },
+    {
+      "id": "tga",
+      "repository": "sankarshanmukhopadhyay/trust-graph-artifacts",
+      "version": "v0.14.0",
+      "commit": "69692732f61a9f0426ed4a901a4f2702be139593",
+      "releaseTag": "v0.14.0",
+      "role": "executable-governance-and-implementation-layer",
+      "validationRuns": [
+        {
+          "name": "validate-repository-assurance",
+          "run": "https://github.com/sankarshanmukhopadhyay/trust-graph-artifacts/actions/runs/43362137127",
+          "conclusion": "success"
+        }
+      ],
+      "evidence": [
+        "scripts/validate_decision_resolution_consumer.py",
+        "validation/tsms/decision-resolution-consumer.json"
+      ]
+    }
+  ],
+  "requiredQualification": "artifacts/e2e/TSMS-2026.3/decision-resolution-qualification.json",
+  "unknownCompatibilityPolicy": "unsupported-until-new-receipt",
+  "humanAcceptance": {
+    "accepted": false,
+    "acceptedBy": null,
+    "acceptedAt": null,
+    "evidence": null
+  },
+  "limitations": [
+    "Candidate is not active compatibility and cannot inherit the accepted 2026.2 receipt.",
+    "Synthetic tests do not authenticate source competence or establish independent interoperability.",
+    "TGA historical golden-path bindings remain specific to prior component versions.",
+    "Repository conformance is not external certification."
+  ]
+}
