@@ -1,0 +1,148 @@
+{
+  "schema": "tsmm-temporal-composition-pressure/v1",
+  "normativeStatus": "informative-pressure-test",
+  "notes": "Synthetic inputs, not authenticated histories or external conformance evidence. Base cases are expanded by runner before evaluation.",
+  "cases": [
+    {
+      "id": "TC-01-compatible",
+      "effective_at": "2026-10-10T00:00:00Z",
+      "evidence_as_of": "2026-10-10T23:59:59Z",
+      "policy_version": "v3",
+      "inputs": [
+        {
+          "role": "source_competence",
+          "competent": true,
+          "coverage": "complete",
+          "recorded_at": "2026-10-08T00:00:00Z",
+          "effective_from": "2026-10-01T00:00:00Z",
+          "policy_version": "v3",
+          "provenance_ref": "urn:source:authority:1"
+        },
+        {
+          "role": "delegation",
+          "competent": true,
+          "coverage": "complete",
+          "recorded_at": "2026-10-09T00:00:00Z",
+          "effective_from": "2026-10-09T00:00:00Z",
+          "policy_version": "v3",
+          "provenance_ref": "urn:source:mandate:1"
+        },
+        {
+          "role": "policy",
+          "competent": true,
+          "coverage": "complete",
+          "recorded_at": "2026-10-01T00:00:00Z",
+          "effective_from": "2026-10-01T00:00:00Z",
+          "policy_version": "v3",
+          "provenance_ref": "urn:source:policy:3"
+        }
+      ],
+      "expected": "permit"
+    },
+    {
+      "id": "TC-02-recorded-later",
+      "base": "TC-01-compatible",
+      "inputs_patch": {
+        "delegation": {
+          "recorded_at": "2026-10-15T00:00:00Z"
+        }
+      },
+      "expected": "indeterminate"
+    },
+    {
+      "id": "TC-03-mismatched-cutoffs",
+      "base": "TC-01-compatible",
+      "inputs_patch": {
+        "delegation": {
+          "evidence_as_of": "2026-10-20T00:00:00Z"
+        }
+      },
+      "expected": "indeterminate"
+    },
+    {
+      "id": "TC-04-unproven-competence",
+      "base": "TC-01-compatible",
+      "inputs_patch": {
+        "source_competence": {
+          "competent": false
+        }
+      },
+      "expected": "indeterminate"
+    },
+    {
+      "id": "TC-05-incomplete-history",
+      "base": "TC-01-compatible",
+      "inputs_patch": {
+        "delegation": {
+          "coverage": "unknown"
+        }
+      },
+      "expected": "indeterminate"
+    },
+    {
+      "id": "TC-06-policy-mismatch",
+      "base": "TC-01-compatible",
+      "inputs_patch": {
+        "policy": {
+          "policy_version": "v4"
+        }
+      },
+      "expected": "indeterminate"
+    },
+    {
+      "id": "TC-07-contradictory",
+      "base": "TC-01-compatible",
+      "inputs_patch": {
+        "delegation": {
+          "contradictory": true
+        }
+      },
+      "expected": "indeterminate"
+    },
+    {
+      "id": "TC-08-observation-not-recording",
+      "base": "TC-01-compatible",
+      "inputs_patch": {
+        "delegation": {
+          "recorded_at": null,
+          "observed_at": "2026-10-09T00:00:00Z"
+        }
+      },
+      "expected": "indeterminate"
+    },
+    {
+      "id": "TC-09-effective-time-outside",
+      "base": "TC-01-compatible",
+      "inputs_patch": {
+        "delegation": {
+          "effective_from": "2026-10-11T00:00:00Z"
+        }
+      },
+      "expected": "indeterminate"
+    },
+    {
+      "id": "TC-10-reconstructed-later-same-cutoff",
+      "base": "TC-01-compatible",
+      "reconstructed_at": "2026-11-13T00:00:00Z",
+      "expected": "permit"
+    },
+    {
+      "id": "TC-11-new-cutoff-with-correction",
+      "base": "TC-01-compatible",
+      "evidence_as_of": "2026-10-20T00:00:00Z",
+      "inputs_patch": {
+        "delegation": {
+          "recorded_at": "2026-10-15T00:00:00Z",
+          "corrected_status": "revoked"
+        }
+      },
+      "expected": "deny"
+    },
+    {
+      "id": "TC-12-earlier-cutoff-preserved",
+      "base": "TC-01-compatible",
+      "reconstructed_at": "2026-10-20T00:00:00Z",
+      "expected": "permit"
+    }
+  ]
+}
