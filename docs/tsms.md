@@ -42,6 +42,10 @@ validation / evidence / assurance consumers
 
 Feedback may flow upward through issues and proposals, but implementation need does not itself create semantic or schema authority.
 
+## Successor under qualification
+
+[TSMS 2026.3 candidate — Banganapalle](../releases/tsms-stack-2026.3.md) is a **non-accepted** evidence-backed proposal with TSMM v0.26.0, TIS v0.16.0 and TGA v0.14.0 component pins. This does not alter the active 2026.2 receipt. The decision-resolution consumer qualification and release decision are governed separately by [#70](https://github.com/qbf-consulting/trust-systems-meta-model/issues/70).
+
 ## Accepted compatibility baseline
 
 The active validated TSMS baseline is resolved through `model/tsms-baseline-lineage.json` and pinned in `model/tsms-baseline-receipt-2026.2.json`:
